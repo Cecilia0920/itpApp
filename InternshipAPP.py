@@ -186,22 +186,19 @@ def addLecturer():
 def loginLecturer():
     error_message = None  # Define error_message with a default value
 
-    if request.method == 'POST':
-        lecturerEmail = request.form['lecEmail']
-        lecturerPassword = request.form['lecPassword']
+    lecturerEmail = request.form['lecEmail']
+    lecturerPassword = request.form['lecPassword']
         
-        cursor = db_conn.cursor()
-        cursor.execute("SELECT * FROM Lecturer WHERE LecturerEmail = %s AND LecturerPassword = %s", (lecturerEmail, lecturerPassword))
-        user = cursor.fetchone()
-        cursor.close()
-        session['LecturerEmail'] = lecturerEmail
-        if user:
-            return render_template('studentList.html', error_message=error_message)
-        else:
-            error_message = 'Login failed. Please check your email and password.'
-            return render_template('lecturer-login.html', error_message=error_message)
-    
-    return render_template('lecturer-login.html', error_message=error_message)
+    cursor = db_conn.cursor()
+    cursor.execute("SELECT * FROM Lecturer WHERE LecturerEmail = %s AND LecturerPassword = %s", (lecturerEmail, lecturerPassword))
+    user = cursor.fetchone()
+    cursor.close()
+    #session['lecEmail'] = lecturerEmail
+    if user:
+        return render_template('studentList.html', error_message=error_message)
+    else:
+        error_message = 'Login failed. Please check your email and password.'
+        return render_template('lecturer-login.html', error_message=error_message)
 
 
 if __name__ == '__main__':
