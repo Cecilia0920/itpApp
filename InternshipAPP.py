@@ -172,11 +172,11 @@ if __name__ == '__main__':
 
 @app.route("/lecturer-register", methods=['GET', 'POST'])
 def addLecturer():
-    lecturer_name = request.form['LecturerName']
-    lecturer_id = request.form['LecturerID']
-    lecturer_nric = request.form['NRIC']
-    lecturer_email = request.form['LecturerEmail']
-    password = request.form['LecturerPassword']
+    lecturer_name = request.form['lecName']
+    lecturer_id = request.form['lecID']
+    lecturer_nric = request.form['lecNRIC']
+    lecturer_email = request.form['lecEmail']
+    password = request.form['lecPassword']
 
     insert_sql = "INSERT INTO Lecturer VALUES (%s, %s, %d, %s, %s)"
     cursor = db_conn.cursor()
@@ -188,8 +188,8 @@ def lecturerLogin():
     error_message = None  # Define error_message with a default value
 
     if request.method == 'POST':
-        lecturerEmail = request.form['LecturerEmail']
-        lecturerPassword = request.form['LecturerPassword']
+        lecturerEmail = request.form['lecEmail']
+        lecturerPassword = request.form['lecPassword']
         
         cursor = db_conn.cursor()
         cursor.execute("SELECT * FROM Lecturer WHERE LecturerEmail = %s AND LecturerPassword = %s", (lecturerEmail, lecturerPassword))
