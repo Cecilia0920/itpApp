@@ -185,7 +185,6 @@ def addLecturer():
     cursor.close()
 
     return render_template('lecturer-login.html')
-
 # @app.route("/lecturer-login", methods=['GET', 'POST'])
 # def lecturerLogin():
 #     error_message = None  # Define error_message with a default value
