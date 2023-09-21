@@ -181,7 +181,7 @@ def addLecturer():
     insert_sql = "INSERT INTO Lecturer VALUES (%s, %s, %d, %s, %s)"
     cursor = db_conn.cursor()
 
-    return render_template('lecturer-login.html')
+    return render_template('lecturer-login.html', error_message=error_message)
 
 @app.route("/lecturer-login", methods=['GET', 'POST'])
 def lecturerLogin():
@@ -201,7 +201,7 @@ def lecturerLogin():
             lecturerEmail = user[0]  # Assuming 'lecEmail' is the first column in your SELECT statement
             # Store 'lecEmail' in the session
             session['LecturerEmail'] = lecturerEmail
-            return redirect(url_for('studentList'))
+            return render_template('studentList.html', error_message=error_message)
         else:
             error_message = 'Login failed. Please check your email and password.'
             return render_template('lecturer-login.html', error_message=error_message)
