@@ -182,6 +182,7 @@ def addLecturer():
 
     return render_template('lecturer-login.html')
 
+
 @app.route("/lecturer-login", methods=['GET', 'POST'])
 def loginLecturer():
     error_message = None  # Define error_message with a default value
@@ -191,16 +192,16 @@ def loginLecturer():
         
     cursor = db_conn.cursor()
     cursor.execute("SELECT * FROM Lecturer WHERE LecturerEmail = %s AND LecturerPassword = %s", (lecturerEmail, lecturerPassword))
-    user = cursor.fetchone()
+    lecturer = cursor.fetchone()
     cursor.close()
-    print(user)
-    if user:
-        # Store the user's email in the session
-        session['lecEmail'] = lecturerEmail
-        return render_template('studentList.html', error_message=error_message)
-    else:
-        error_message = 'Login failed. Please check your email and password.'
 
+    if student:
+        # Store student information in a session
+        session['lecEmail'] = lecturerEmail  # Assuming student_id is in the second column of your Student table
+        # Redirect to the student's dashboard
+        return redirect(url_for('studentList.html'))
+    else:
+        flash('Login failed! Invalid email or password.', 'danger')
     return render_template('lecturer-login.html', error_message=error_message)
 
     
