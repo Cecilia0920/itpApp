@@ -61,7 +61,7 @@ def joblist():
     return render_template('job-list.html')
 
 @app.route("/lecturer-login", methods=['GET', 'POST'])
-def addLecturer():
+def lecturerLogin():
     return render_template('lecturer-login.html')
 
 @app.route("/post-job", methods=['GET', 'POST'])
@@ -179,15 +179,10 @@ def addLecturer():
     password = request.form['lecPassword']
 
     cursor = db_conn.cursor()
-    cursor.execute("INSERT INTO Lecturer (LecturerName, LecturerID,NRIC,LecturerEmail, LecturerPassword) VALUES (%s, %s, %d, %s, %s)", 
+    cursor.execute("INSERT INTO Lecturer VALUES (%s, %s, %s, %s, %s)", 
                        (lecturer_name, lecturer_id, lecturer_nric, lecturer_email, password))
     db_conn.commit()
     cursor.close()
-
-    # insert_sql = "INSERT INTO Lecturer VALUES (%s, %s, %d, %s, %s)"
-    # cursor = db_conn.cursor()
-    # cursor.execute(insert_sql, (lecturer_name, lecturer_id,lecturer_nric,lecturer_email,password))
-    # db_conn.commit()
 
     return render_template('lecturer-login.html')
 
