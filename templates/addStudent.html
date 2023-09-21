@@ -105,13 +105,13 @@
         <!-- Category Start -->
         <div class="addStudent-box">
             <h2>Add Student</h2>
-            <form>
+            <form method = "POST" enctype="multipart/form-data" action="/addStudent" method="POST">
                 <div class="studentInfo-box">
-                    <input type="text" name="" required="">
+                    <input type="text" name="email" id="StudentEmail" required>
                     <label>Student ID</label>
                 </div>
                 <div class="studentInfo-box">
-                    <input type="text" name="" required="">
+                    <input type="text" name="name" id="StudentName" required>
                     <label>Student Name</label>
                 </div>
                 <a href="/studentList">

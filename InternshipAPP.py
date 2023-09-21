@@ -167,3 +167,232 @@ def companyDetails():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
+
+# Lecturer Login & Register Function
+
+@app.route("/lecturer-register", methods=['GET', 'POST'])
+def addLecturer():
+    lecturer_name = request.form['LecturerName']
+    lecturer_id = request.form['LecturerID']
+    lecturer_nric = request.form['NRIC']
+    lecturer_email = request.form['LecturerEmail']
+    password = request.form['LecturerPassword']
+
+    insert_sql = "INSERT INTO Lecturer VALUES (%s, %s, %d, %s, %s)"
+    cursor = db_conn.cursor()
+
+    return render_template('lecturer-login.html')
+
+@app.route("/lecturer-login", methods=['GET', 'POST'])
+def lecturerLogin():
+    error_message = None  # Define error_message with a default value
+
+    if request.method == 'POST':
+        lecturerEmail = request.form['LecturerEmail']
+        lecturerPassword = request.form['LecturerPassword']
+        
+        cursor = db_conn.cursor()
+        cursor.execute("SELECT * FROM Lecturer WHERE LecturerEmail = %s AND LecturerPassword = %s", (lecturerEmail, lecturerPassword))
+        user = cursor.fetchone()
+        cursor.close()
+        
+        if user:
+            # Access the 'lecEmail' from the tuple using integer index
+            lecturerEmail = user[0]  # Assuming 'lecEmail' is the first column in your SELECT statement
+            # Store 'lecEmail' in the session
+            session['LecturerEmail'] = lecturerEmail
+            return redirect(url_for('studentList'))
+        else:
+            error_message = 'Login failed. Please check your email and password.'
+            return render_template('lecturer-login.html', error_message=error_message)
+    
+    return render_template('lecturer-login.html', error_message=error_message)
+
+# List & Search Student Function
+@app.route("/studentList")
+def studentList():
+    
+    cursor = db_conn.cursor()
+    # Execute a SQL query to fetch data from the database
+    cursor.execute("SELECT cohortID FROM cohort")
+    cohorts = cursor.fetchall()  # Fetch all rows
+    
+    # Execute a SQL query to fetch data from the database
+    cursor.execute("""
+                   SELECT *
+                   FROM student
+                   WHERE LecturerEmail = %s
+                   """, session['LecturerEmail'])
+    stud_data = cursor.fetchall()  # Fetch all rows
+    
+    cursor.close()
+    
+    # Initialize an empty list to store dictionaries
+    students = []
+
+    # Iterate through the fetched data and create dictionaries
+    for row in stud_data:
+        app_dict = {
+            'StudName': row[0],
+            'StudID': row[1],
+            'TarumtEmail': row[8],
+            'Programme': row[5],
+            'CompanyName': row[10],
+            'JobAllowance': row[11],
+            # Add other fields as needed
+        }
+        students.append(app_dict)
+    logo = "https://" + bucket + ".s3.amazonaws.com/" + stud_data[0] + "_logo.png"
+
+    return render_template('/studentList', students=students,logo=logo)
+
+
+@app.route("/searchStudent", methods=['GET', 'POST'])
+def searchEmp():
+    return render_template('studentList.html')
+
+@app.route("/searchStuProcess", methods=['GET', 'POST'])
+def searchEmpProcess():
+    student_id = request.form['StudID']
+
+    search_sql = "SELECT * FROM Student WHERE StudID=%s"
+    cursor = db_conn.cursor()
+
+    cursor.execute(search_sql, (student_id))
+    rows = cursor.fetchall()
+    cursor.close()  
+
+    return render_template('studentList.html', rows=rows)
+
+# Add Student Supervised Function
+@app.route("/addStudent", methods=['GET', 'POST'])
+def addEmp():
+    return render_template('addStudent.html')
+
+@app.route("/addEmpProcess", methods=['GET', 'POST'])
+def addEmpProcess():
+    student_id = request.form['StudID']
+    student_name = request.form['StudName']
+
+    update_sql = "UPDATE Student SET SupervisorEmail=%s WHERE StudID=%s"
+    cursor = db_conn.cursor()
+
+    cursor.execute(update_sql, (student_id))
+    db_conn.commit()
+    cursor.close()
+
+    cursor = db_conn.cursor()
+    cursor.execute('SELECT * FROM Student')
+    rows = cursor.fetchall()
+    cursor.close()
+
+    return render_template('studentList.html', rows=rows)
+
+# Show Student Details Function
+@app.route("/lecturer/studentDetail")
+def lecStudentDetail():
+    
+    # Retrieve the studID query parameter from the URL
+    studID = request.args.get('StudID')
+    
+    # Fetch the company's information from the database based on studID
+    cursor = db_conn.cursor()
+        
+    cursor.execute("""
+                SELECT *
+                FROM student 
+                WHERE studID = %s
+                """, (studID),)
+    student_data = cursor.fetchone()
+    cursor.close()
+
+    cursor2 = db_conn.cursor()
+    cursor.execute("""
+                SELECT *
+                FROM Company_Profile 
+                WHERE CompanyName = %s
+                """, (studID),)
+    student_data = cursor.fetchone()
+    cursor.close()
+    
+    if student_data:
+        # Convert the user record to a dictionary
+        student = {
+            'StudID': student_data[0],
+            'StudName':student_data[1]
+            'gender': student_data[1],
+            'Programme': student_data[2],
+            'StudEmail': student_data[3],
+            'PhoneNo': student_data[4],
+            'AcademicYear': student_data[5],
+            'CGPA': student_data[7],
+            'CompanyName': student_data[10],
+            'Position': student_data[11],
+            'monthlyAllowance': student_data[12],
+            'compSupervisorName': student_data[13],
+            'compSupervisorEmail': student_data[14],
+            'internStartDate': student_data[17],
+            'internEndDate': student_data[18],
+            # Add other fields as needed
+        }
+        
+        # Get the s3 bucket location
+        s3 = boto3.resource('s3')
+        bucket_location = boto3.client('s3').get_bucket_location(Bucket=custombucket)
+        s3_location = (bucket_location['LocationConstraint'])
+        
+        if s3_location is None:
+            s3_location = 'us-east-1'
+        
+        # Initial declaration
+        compAcceptanceForm_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_compAcceptanceForm.pdf".format(
+            custombucket,
+            s3_location,
+            student['studID'])
+        
+        parrentAckForm_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_parrentAckForm.pdf".format(
+            custombucket,
+            s3_location,
+            student['studID'])
+        
+        letterOfIndemnity_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_letterOfIndemnity.pdf".format(
+            custombucket,
+            s3_location,
+            student['studID'])
+        
+        progressReport1_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_progressReport1.pdf".format(
+            custombucket,
+            s3_location,
+            student['studID'])
+        
+        progressReport2_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_progressReport2.pdf".format(
+            custombucket,
+            s3_location,
+            student['studID'])
+        
+        progressReport3_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_progressReport3.pdf".format(
+            custombucket,
+            s3_location,
+            student['studID'])
+        
+        finalReport_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_finalReport.pdf".format(
+            custombucket,
+            s3_location,
+            student['studID'])
+        
+        rptStatus = 1 # means already submit
+        # Check whether reports submitted or not, just take one report for checking, since if one exist, others exist as well
+        response = requests.head(finalReport_url)
+        if response.status_code != 200:
+            rptStatus = 0  # means havent submit
+    
+    return render_template('lecturer/studentDetail.html', 
+                           student=student,
+                           compAcceptanceForm_url=compAcceptanceForm_url,
+                           parrentAckForm_url=parrentAckForm_url,
+                           letterOfIndemnity_url=letterOfIndemnity_url,
+                           progressReport1_url=progressReport1_url,
+                           progressReport2_url=progressReport2_url,
+                           progressReport3_url=progressReport3_url,
+                           finalReport_url=finalReport_url,
+                           rptStatus=rptStatus)
