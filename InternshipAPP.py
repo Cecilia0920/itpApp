@@ -194,13 +194,15 @@ def loginLecturer():
     user = cursor.fetchone()
     cursor.close()
     print(user)
-    #session['lecEmail'] = lecturerEmail
     if user:
-        return render_template('studentList.html', error_message=error_message)
+        # Store the user's email in the session
+        session['lecEmail'] = lecturerEmail
+        return redirect(url_for('student_list'))
     else:
         error_message = 'Login failed. Please check your email and password.'
-        return "Invalid Lecturer Email/Password"
-    render_template('lecturer-login.html', error_message=error_message)
+
+    return render_template('lecturer-login.html', error_message=error_message)
+
     
 
 if __name__ == '__main__':
