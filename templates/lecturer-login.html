@@ -271,16 +271,20 @@
                 </form>
 
                 <!--Login Form-->
-                <form class="login" id="logInForm" style="display: none;" enctype="multipart/form-data "
-                action="/lecturer-login" method="POST">
+                <form class="login" id="logInForm" style="display: none;" action="/studentList" method="post">
                     <div class="formGroup">
-                        <input type="email" placeholder="xxx@tarc.edu.my" name="lecEmail" id="logInEmail" required
+                        <input type="email" placeholder="xxx@tarc.edu.my" name="email" id="logInEmail" required
                             autocomplete="off" style="color: #393a3a;">
                     </div>
                     <div class="formGroup">
-                        <input type="password" placeholder="lecPassword" name="lecPassword" id="lecPassword" required autocomplete="off"
+                        <input type="password" placeholder="Password" id="lecPassword" required autocomplete="off"
                             style="color: #393a3a;">
 
+                    </div>
+                    <div class="checkBox" style="margin-bottom: 15px;">
+                        <input type="checkbox" name="checkbox" id="checkbox"
+                            style="color: #393a3a; margin-left: -295px;">
+                        <span class="text" style="margin-left: -280px;">Keep me signed in on this device</span>
                     </div>
                     <div class="formGroup">
                         <button type="submit" class="btn2" id="log">LOGIN</button>

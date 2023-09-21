@@ -1,10 +1,11 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 from pymysql import connections
 import os
 import boto3
 from config import *
 
 app = Flask(__name__,static_folder='assets')
+app.secret_key = 'internship123'
 
 bucket = custombucket
 region = customregion
@@ -116,7 +117,6 @@ def AddCompany():
         return "Please select a file"
 
     try:
-
         cursor.execute(insert_sql, (company_name, company_email, password, company_description, company_address, contact_number, website_URL, industry, company_size))
         db_conn.commit()
         # Uplaod image file in S3 #
@@ -150,6 +150,7 @@ def AddCompany():
 @app.route("/get-company-details", methods=['GET', 'POST'])
 def companyDetails():
     company_email = request.form['Company_Email']
+    session['company_email'] = company_email
 
     cursor = db_conn.cursor()
     cursor.execute('SELECT * FROM Company_Profile WHERE Company_Email = %s', (company_email))
@@ -164,11 +165,6 @@ def companyDetails():
         return "Invalid Company"
 
     return render_template('company-login.html')
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80, debug=True)
-
-# Lecturer Login & Register Function
 
 @app.route("/lecturer-register", methods=['GET', 'POST'])
 def addLecturer():
@@ -185,6 +181,10 @@ def addLecturer():
     cursor.close()
 
     return render_template('lecturer-login.html')
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80, debug=True)
+
 # @app.route("/lecturer-login", methods=['GET', 'POST'])
 # def lecturerLogin():
 #     error_message = None  # Define error_message with a default value
