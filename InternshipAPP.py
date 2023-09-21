@@ -178,10 +178,16 @@ def addLecturer():
     lecturer_email = request.form['lecEmail']
     password = request.form['lecPassword']
 
-    insert_sql = "INSERT INTO Lecturer VALUES (%s, %s, %d, %s, %s)"
     cursor = db_conn.cursor()
-    cursor.execute(insert_sql, (lecturer_name, lecturer_id,lecturer_nric,lecturer_email,password))
+    cursor.execute("INSERT INTO Lecturer (LecturerName, LecturerID,NRIC,LecturerEmail, LecturerPassword) VALUES (%s, %s, %d, %s, %s)", 
+                       (lecturer_name, lecturer_id, lecturer_nric, lecturer_email, password))
     db_conn.commit()
+    cursor.close()
+
+    # insert_sql = "INSERT INTO Lecturer VALUES (%s, %s, %d, %s, %s)"
+    # cursor = db_conn.cursor()
+    # cursor.execute(insert_sql, (lecturer_name, lecturer_id,lecturer_nric,lecturer_email,password))
+    # db_conn.commit()
 
     return render_template('lecturer-login.html', error_message=error_message)
 
