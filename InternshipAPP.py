@@ -289,110 +289,110 @@ def addEmpProcess():
     return render_template('studentList.html', rows=rows)
 
 # Show Student Details Function
-@app.route("/lecturer/studentDetail")
-def lecStudentDetail():
+# @app.route("/lecturer/studentDetail")
+# def lecStudentDetail():
     
-    # Retrieve the studID query parameter from the URL
-    studID = request.args.get('StudID')
+#     # Retrieve the studID query parameter from the URL
+#     studID = request.args.get('StudID')
     
-    # Fetch the company's information from the database based on studID
-    cursor = db_conn.cursor()
+#     # Fetch the company's information from the database based on studID
+#     cursor = db_conn.cursor()
         
-    cursor.execute("""
-                SELECT *
-                FROM student 
-                WHERE studID = %s
-                """, (studID),)
-    student_data = cursor.fetchone()
-    cursor.close()
+#     cursor.execute("""
+#                 SELECT *
+#                 FROM student 
+#                 WHERE studID = %s
+#                 """, (studID),)
+#     student_data = cursor.fetchone()
+#     cursor.close()
 
-    cursor2 = db_conn.cursor()
-    cursor.execute("""
-                SELECT *
-                FROM Company_Profile 
-                WHERE CompanyName = %s
-                """, (studID),)
-    student_data = cursor.fetchone()
-    cursor.close()
+#     cursor2 = db_conn.cursor()
+#     cursor.execute("""
+#                 SELECT *
+#                 FROM Company_Profile 
+#                 WHERE CompanyName = %s
+#                 """, (studID),)
+#     student_data = cursor.fetchone()
+#     cursor.close()
     
-    if student_data:
-        # Convert the user record to a dictionary
-        student = {
-            'StudID': student_data[0],
-            'StudName':student_data[1]
-            'gender': student_data[1],
-            'Programme': student_data[2],
-            'StudEmail': student_data[3],
-            'PhoneNo': student_data[4],
-            'AcademicYear': student_data[5],
-            'CGPA': student_data[7],
-            'CompanyName': student_data[10],
-            'Position': student_data[11],
-            'monthlyAllowance': student_data[12],
-            'compSupervisorName': student_data[13],
-            'compSupervisorEmail': student_data[14],
-            'internStartDate': student_data[17],
-            'internEndDate': student_data[18],
-            # Add other fields as needed
-        }
+#     if student_data:
+#         # Convert the user record to a dictionary
+#         student = {
+#             'StudID': student_data[0],
+#             'StudName':student_data[1]
+#             'gender': student_data[1],
+#             'Programme': student_data[2],
+#             'StudEmail': student_data[3],
+#             'PhoneNo': student_data[4],
+#             'AcademicYear': student_data[5],
+#             'CGPA': student_data[7],
+#             'CompanyName': student_data[10],
+#             'Position': student_data[11],
+#             'monthlyAllowance': student_data[12],
+#             'compSupervisorName': student_data[13],
+#             'compSupervisorEmail': student_data[14],
+#             'internStartDate': student_data[17],
+#             'internEndDate': student_data[18],
+#             # Add other fields as needed
+#         }
         
-        # Get the s3 bucket location
-        s3 = boto3.resource('s3')
-        bucket_location = boto3.client('s3').get_bucket_location(Bucket=custombucket)
-        s3_location = (bucket_location['LocationConstraint'])
+#         # Get the s3 bucket location
+#         s3 = boto3.resource('s3')
+#         bucket_location = boto3.client('s3').get_bucket_location(Bucket=custombucket)
+#         s3_location = (bucket_location['LocationConstraint'])
         
-        if s3_location is None:
-            s3_location = 'us-east-1'
+#         if s3_location is None:
+#             s3_location = 'us-east-1'
         
-        # Initial declaration
-        compAcceptanceForm_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_compAcceptanceForm.pdf".format(
-            custombucket,
-            s3_location,
-            student['studID'])
+#         # Initial declaration
+#         compAcceptanceForm_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_compAcceptanceForm.pdf".format(
+#             custombucket,
+#             s3_location,
+#             student['studID'])
         
-        parrentAckForm_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_parrentAckForm.pdf".format(
-            custombucket,
-            s3_location,
-            student['studID'])
+#         parrentAckForm_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_parrentAckForm.pdf".format(
+#             custombucket,
+#             s3_location,
+#             student['studID'])
         
-        letterOfIndemnity_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_letterOfIndemnity.pdf".format(
-            custombucket,
-            s3_location,
-            student['studID'])
+#         letterOfIndemnity_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_letterOfIndemnity.pdf".format(
+#             custombucket,
+#             s3_location,
+#             student['studID'])
         
-        progressReport1_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_progressReport1.pdf".format(
-            custombucket,
-            s3_location,
-            student['studID'])
+#         progressReport1_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_progressReport1.pdf".format(
+#             custombucket,
+#             s3_location,
+#             student['studID'])
         
-        progressReport2_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_progressReport2.pdf".format(
-            custombucket,
-            s3_location,
-            student['studID'])
+#         progressReport2_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_progressReport2.pdf".format(
+#             custombucket,
+#             s3_location,
+#             student['studID'])
         
-        progressReport3_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_progressReport3.pdf".format(
-            custombucket,
-            s3_location,
-            student['studID'])
+#         progressReport3_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_progressReport3.pdf".format(
+#             custombucket,
+#             s3_location,
+#             student['studID'])
         
-        finalReport_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_finalReport.pdf".format(
-            custombucket,
-            s3_location,
-            student['studID'])
+#         finalReport_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_finalReport.pdf".format(
+#             custombucket,
+#             s3_location,
+#             student['studID'])
         
-        rptStatus = 1 # means already submit
-        # Check whether reports submitted or not, just take one report for checking, since if one exist, others exist as well
-        response = requests.head(finalReport_url)
-        if response.status_code != 200:
-            rptStatus = 0  # means havent submit
+#         rptStatus = 1 # means already submit
+#         # Check whether reports submitted or not, just take one report for checking, since if one exist, others exist as well
+#         response = requests.head(finalReport_url)
+#         if response.status_code != 200:
+#             rptStatus = 0  # means havent submit
     
-    return render_template('lecturer/studentDetail.html', 
-                           student=student,
-                           compAcceptanceForm_url=compAcceptanceForm_url,
-                           parrentAckForm_url=parrentAckForm_url,
-                           letterOfIndemnity_url=letterOfIndemnity_url,
-                           progressReport1_url=progressReport1_url,
-                           progressReport2_url=progressReport2_url,
-                           progressReport3_url=progressReport3_url,
-                           finalReport_url=finalReport_url,
-                           rptStatus=rptStatus)
+#     return render_template('lecturer/studentDetail.html', 
+#                            student=student,
+#                            compAcceptanceForm_url=compAcceptanceForm_url,
+#                            parrentAckForm_url=parrentAckForm_url,
+#                            letterOfIndemnity_url=letterOfIndemnity_url,
+#                            progressReport1_url=progressReport1_url,
+#                            progressReport2_url=progressReport2_url,
+#                            progressReport3_url=progressReport3_url,
+#                            finalReport_url=finalReport_url,
+#                            rptStatus=rptStatus)
