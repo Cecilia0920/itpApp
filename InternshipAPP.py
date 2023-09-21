@@ -193,13 +193,15 @@ def loginLecturer():
     cursor.execute("SELECT * FROM Lecturer WHERE LecturerEmail = %s AND LecturerPassword = %s", (lecturerEmail, lecturerPassword))
     user = cursor.fetchone()
     cursor.close()
+    print(user)
     #session['lecEmail'] = lecturerEmail
     if user:
         return render_template('studentList.html', error_message=error_message)
     else:
         error_message = 'Login failed. Please check your email and password.'
-        return render_template('lecturer-login.html', error_message=error_message)
-
+        return "Invalid Lecturer Email/Password"
+    render_template('lecturer-login.html', error_message=error_message)
+    
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
