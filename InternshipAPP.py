@@ -180,6 +180,8 @@ def addLecturer():
 
     insert_sql = "INSERT INTO Lecturer VALUES (%s, %s, %d, %s, %s)"
     cursor = db_conn.cursor()
+    cursor.execute(insert_sql, (lecturer_name, lecturer_id,lecturer_nric,lecturer_email,password))
+    db_conn.commit()
 
     return render_template('lecturer-login.html', error_message=error_message)
 
