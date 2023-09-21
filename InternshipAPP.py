@@ -197,7 +197,7 @@ def loginLecturer():
     if user:
         # Store the user's email in the session
         session['lecEmail'] = lecturerEmail
-        return redirect(url_for('student_list'))
+        return render_template('studentList.html', error_message=error_message)
     else:
         error_message = 'Login failed. Please check your email and password.'
 
