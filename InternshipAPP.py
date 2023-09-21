@@ -189,112 +189,112 @@ def addLecturer():
     # cursor.execute(insert_sql, (lecturer_name, lecturer_id,lecturer_nric,lecturer_email,password))
     # db_conn.commit()
 
-    return render_template('lecturer-login.html', error_message=error_message)
+    return render_template('lecturer-login.html')
 
-@app.route("/lecturer-login", methods=['GET', 'POST'])
-def lecturerLogin():
-    error_message = None  # Define error_message with a default value
+# @app.route("/lecturer-login", methods=['GET', 'POST'])
+# def lecturerLogin():
+#     error_message = None  # Define error_message with a default value
 
-    if request.method == 'POST':
-        lecturerEmail = request.form['lecEmail']
-        lecturerPassword = request.form['lecPassword']
+#     if request.method == 'POST':
+#         lecturerEmail = request.form['lecEmail']
+#         lecturerPassword = request.form['lecPassword']
         
-        cursor = db_conn.cursor()
-        cursor.execute("SELECT * FROM Lecturer WHERE LecturerEmail = %s AND LecturerPassword = %s", (lecturerEmail, lecturerPassword))
-        user = cursor.fetchone()
-        cursor.close()
+#         cursor = db_conn.cursor()
+#         cursor.execute("SELECT * FROM Lecturer WHERE LecturerEmail = %s AND LecturerPassword = %s", (lecturerEmail, lecturerPassword))
+#         user = cursor.fetchone()
+#         cursor.close()
         
-        if user:
-            # Access the 'lecEmail' from the tuple using integer index
-            lecturerEmail = user[0]  # Assuming 'lecEmail' is the first column in your SELECT statement
-            # Store 'lecEmail' in the session
-            session['LecturerEmail'] = lecturerEmail
-            return render_template('studentList.html', error_message=error_message)
-        else:
-            error_message = 'Login failed. Please check your email and password.'
-            return render_template('lecturer-login.html', error_message=error_message)
+#         if user:
+#             # Access the 'lecEmail' from the tuple using integer index
+#             lecturerEmail = user[0]  # Assuming 'lecEmail' is the first column in your SELECT statement
+#             # Store 'lecEmail' in the session
+#             session['LecturerEmail'] = lecturerEmail
+#             return render_template('studentList.html', error_message=error_message)
+#         else:
+#             error_message = 'Login failed. Please check your email and password.'
+#             return render_template('lecturer-login.html', error_message=error_message)
     
-    return render_template('lecturer-login.html', error_message=error_message)
+#     return render_template('lecturer-login.html', error_message=error_message)
 
 # List & Search Student Function
-@app.route("/studentList")
-def studentList():
+# @app.route("/studentList")
+# def studentList():
     
-    cursor = db_conn.cursor()
-    # Execute a SQL query to fetch data from the database
-    cursor.execute("SELECT cohortID FROM cohort")
-    cohorts = cursor.fetchall()  # Fetch all rows
+#     cursor = db_conn.cursor()
+#     # Execute a SQL query to fetch data from the database
+#     cursor.execute("SELECT cohortID FROM cohort")
+#     cohorts = cursor.fetchall()  # Fetch all rows
     
-    # Execute a SQL query to fetch data from the database
-    cursor.execute("""
-                   SELECT *
-                   FROM student
-                   WHERE LecturerEmail = %s
-                   """, session['LecturerEmail'])
-    stud_data = cursor.fetchall()  # Fetch all rows
+#     # Execute a SQL query to fetch data from the database
+#     cursor.execute("""
+#                    SELECT *
+#                    FROM student
+#                    WHERE LecturerEmail = %s
+#                    """, session['LecturerEmail'])
+#     stud_data = cursor.fetchall()  # Fetch all rows
     
-    cursor.close()
+#     cursor.close()
     
-    # Initialize an empty list to store dictionaries
-    students = []
+#     # Initialize an empty list to store dictionaries
+#     students = []
 
-    # Iterate through the fetched data and create dictionaries
-    for row in stud_data:
-        app_dict = {
-            'StudName': row[0],
-            'StudID': row[1],
-            'TarumtEmail': row[8],
-            'Programme': row[5],
-            'CompanyName': row[10],
-            'JobAllowance': row[11],
-            # Add other fields as needed
-        }
-        students.append(app_dict)
-    logo = "https://" + bucket + ".s3.amazonaws.com/" + stud_data[0] + "_logo.png"
+#     # Iterate through the fetched data and create dictionaries
+#     for row in stud_data:
+#         app_dict = {
+#             'StudName': row[0],
+#             'StudID': row[1],
+#             'TarumtEmail': row[8],
+#             'Programme': row[5],
+#             'CompanyName': row[10],
+#             'JobAllowance': row[11],
+#             # Add other fields as needed
+#         }
+#         students.append(app_dict)
+#     logo = "https://" + bucket + ".s3.amazonaws.com/" + stud_data[0] + "_logo.png"
 
-    return render_template('/studentList', students=students,logo=logo)
+#     return render_template('/studentList', students=students,logo=logo)
 
 
-@app.route("/searchStudent", methods=['GET', 'POST'])
-def searchEmp():
-    return render_template('studentList.html')
+# @app.route("/searchStudent", methods=['GET', 'POST'])
+# def searchEmp():
+#     return render_template('studentList.html')
 
-@app.route("/searchStuProcess", methods=['GET', 'POST'])
-def searchEmpProcess():
-    student_id = request.form['StudID']
+# @app.route("/searchStuProcess", methods=['GET', 'POST'])
+# def searchEmpProcess():
+#     student_id = request.form['StudID']
 
-    search_sql = "SELECT * FROM Student WHERE StudID=%s"
-    cursor = db_conn.cursor()
+#     search_sql = "SELECT * FROM Student WHERE StudID=%s"
+#     cursor = db_conn.cursor()
 
-    cursor.execute(search_sql, (student_id))
-    rows = cursor.fetchall()
-    cursor.close()  
+#     cursor.execute(search_sql, (student_id))
+#     rows = cursor.fetchall()
+#     cursor.close()  
 
-    return render_template('studentList.html', rows=rows)
+#     return render_template('studentList.html', rows=rows)
 
-# Add Student Supervised Function
-@app.route("/addStudent", methods=['GET', 'POST'])
-def addEmp():
-    return render_template('addStudent.html')
+# # Add Student Supervised Function
+# @app.route("/addStudent", methods=['GET', 'POST'])
+# def addEmp():
+#     return render_template('addStudent.html')
 
-@app.route("/addEmpProcess", methods=['GET', 'POST'])
-def addEmpProcess():
-    student_id = request.form['StudID']
-    student_name = request.form['StudName']
+# @app.route("/addEmpProcess", methods=['GET', 'POST'])
+# def addEmpProcess():
+#     student_id = request.form['StudID']
+#     student_name = request.form['StudName']
 
-    update_sql = "UPDATE Student SET SupervisorEmail=%s WHERE StudID=%s"
-    cursor = db_conn.cursor()
+#     update_sql = "UPDATE Student SET SupervisorEmail=%s WHERE StudID=%s"
+#     cursor = db_conn.cursor()
 
-    cursor.execute(update_sql, (student_id))
-    db_conn.commit()
-    cursor.close()
+#     cursor.execute(update_sql, (student_id))
+#     db_conn.commit()
+#     cursor.close()
 
-    cursor = db_conn.cursor()
-    cursor.execute('SELECT * FROM Student')
-    rows = cursor.fetchall()
-    cursor.close()
+#     cursor = db_conn.cursor()
+#     cursor.execute('SELECT * FROM Student')
+#     rows = cursor.fetchall()
+#     cursor.close()
 
-    return render_template('studentList.html', rows=rows)
+#     return render_template('studentList.html', rows=rows)
 
 # Show Student Details Function
 # @app.route("/lecturer/studentDetail")
