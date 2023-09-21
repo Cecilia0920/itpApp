@@ -1,0 +1,6 @@
+customhost = "internship-database.cckhg91n7npo.us-east-1.rds.amazonaws.com"
+customuser = "adminuser"
+custompass = "bait3273"
+customdb = "internship"
+custombucket = "yapweichung-bucket"
+customregion = "us-east-1"
