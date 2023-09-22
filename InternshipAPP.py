@@ -200,7 +200,7 @@ def loginLecturer():
             cursor.execute("INSERT INTO Lecturer VALUES (%s, %s)", 
                        (lecturer_email, password))
         # Store lecturer information in a session
-        session['lecEmail'] = lecturerEmail 
+        session['LecturerEmail'] = lecturerEmail 
         cursor.close()
         # Redirect to the student's dashboard
         return redirect(url_for('studentList.html'))
