@@ -194,14 +194,18 @@ def loginLecturer():
     cursor = db_conn.cursor()
     cursor.execute("SELECT * FROM Lecturer WHERE LecturerEmail = %s AND LecturerPassword = %s", (lecturerEmail, lecturerPassword))
     lecturer = cursor.fetchone()
-    cursor.close()
+    #cursor.close()
 
     if student:
+            cursor.execute("INSERT INTO Lecturer VALUES (%s, %s)", 
+                       (lecturer_email, password))
         # Store lecturer information in a session
         session['lecEmail'] = lecturerEmail 
+        cursor.close()
         # Redirect to the student's dashboard
         return redirect(url_for('studentList.html'))
     else:
+        cursor.close()
         flash('Login failed! Invalid email or password.', 'danger')
     return render_template('lecturer-login.html', error_message=error_message)
 
