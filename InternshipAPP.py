@@ -219,6 +219,9 @@ def loginLecturer():
     if lecturer:
         session['LecturerEmail']=lecturerEmail
         return render_template('studentList.html')
+    else:
+        show_msg = "Invalid Email Or Password!"
+        return render_template('lecturer-login.html', show_msg=show_msg)
     
 #List & Search Student Function
 @app.route("/studentDashboardFunc", methods=['GET', 'POST'])
@@ -260,7 +263,7 @@ def studentDashboard():
 def searchStudent():
     student_name = request.form['searchName']
     cursor = db_conn.cursor()
-    lecEmail=session.get
+    lecEmail=session.get('LecturerEmail')
     # Execute a SQL query to fetch data from the database
     cursor.execute("""
                    SELECT *
@@ -297,7 +300,7 @@ def searchStudent():
 def assignSupervisor():
     student_id = request.form['StudentID']
     student_name = request.form['StudentName']
-    supervisorEmail=session.get
+    supervisorEmail=session.get('LecturerEmail')
     update_sql = "UPDATE Student SET SupervisorEmail=%s WHERE StudID=%s AND StudName=%s"
     cursor = db_conn.cursor()
 
@@ -312,8 +315,9 @@ def assignSupervisor():
         cursor.execute('SELECT * FROM Student WHERE SupervisorEmail=%s',(supervisorEmail))
         rows = cursor.fetchall()
         cursor.close()
+    profile = "https://" + bucket + ".s3.amazonaws.com/" + student_data[0] + "_profile.png"
 
-    return render_template('studentList.html', rows=rows,lecEmail=supervisorEmail)
+    return render_template('studentList.html', rows=rows,lecEmail=supervisorEmail,profile=profile)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
