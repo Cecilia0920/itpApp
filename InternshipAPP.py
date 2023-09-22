@@ -188,21 +188,28 @@ def addLecturer():
 def loginLecturer():
     error_message = None  # Define error_message with a default value
 
+if request.method=='POST':
     lecturerEmail = request.form['lecEmail']
     lecturerPassword = request.form['lecPassword']
+
     session['LecturerEmail'] = lecturerEmail     
+
     cursor = db_conn.cursor()
     cursor.execute("SELECT * FROM Lecturer WHERE LecturerEmail = %s AND LecturerPassword = %s", (lecturerEmail, lecturerPassword))
     lecturer = cursor.fetchone()
     cursor.close()
 
     if lecturer:
-        return render_template('studentList.html')
+        # Access the 'lecEmail' from the tuple using integer index
+        lecEmail = lecturer[3]  # Assuming 'lecEmail' is the first column in your SELECT statement
+        # Store 'lecEmail' in the session
+        session['lecEmail'] = lecEmail
+        return render_template(url_for('studentList.html')
     else:
         error_message='Login failed! Invalid email or password.'
         return render_template('lecturer-login.html', error_message=error_message)
 
-    return render_template('lecturer-login.html', error_message=error_message)
+return render_template('lecturer-login.html', error_message=error_message)
 
 @app.route("/studentList.html")
 def studentDashboard():
