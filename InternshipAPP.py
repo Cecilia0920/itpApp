@@ -211,96 +211,76 @@ def loginLecturer():
         
     return render_template('lecturer-login.html',error_message)
 
-# Add Student Supervised Function
-@app.route("/addStudent", methods=['GET', 'POST'])
-def assignSupervisor():
-    student_id = request.form['StudentID']
-    student_name = request.form['StudentName']
-    supervisorEmail=session['LecturerEmail']
-    update_sql = "UPDATE Student SET SupervisorEmail=%s WHERE StudID=%s AND StudName=%s"
-    cursor = db_conn.cursor()
-
-    cursor.execute(update_sql, (supervisorEmail,student_id,student_name))
-    db_conn.commit()
-    student_data = cursor.fetchone()
-    cursor.close()
-
-    if student_data:
-        session['LecturerEmail'] = supervisorEmail     
-        cursor = db_conn.cursor()
-        cursor.execute('SELECT * FROM Student WHERE SupervisorEmail=%s',(supervisorEmail))
-        rows = cursor.fetchall()
-        cursor.close()
-
-    return render_template('studentList.html', rows=rows,lecEmail=supervisorEmail)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80, debug=True)
 
 # List & Search Student Function
-@app.route("/studentList")
-def studentDashboard():
-    cursor = db_conn.cursor()
+# @app.route("/studentList")
+# def studentDashboard():
+#     cursor = db_conn.cursor()
     
-    # Execute a SQL query to fetch data from the database
-    cursor.execute("""
-                   SELECT *
-                   FROM student
-                   WHERE LecturerEmail = %s
-                   """, (session['LecturerEmail']))
-    stud_data = cursor.fetchall()  # Fetch all rows
+#     # Execute a SQL query to fetch data from the database
+#     cursor.execute("""
+#                    SELECT *
+#                    FROM student
+#                    WHERE LecturerEmail = %s
+#                    """, (session['LecturerEmail']))
+#     stud_data = cursor.fetchall()  # Fetch all rows
     
-    cursor.close()
+#     cursor.close()
     
-    # Initialize an empty list to store dictionaries
-    students = []
+#     # Initialize an empty list to store dictionaries
+#     students = []
 
-    # Iterate through the fetched data and create dictionaries
-    for row in stud_data:
-        app_dict = {
-            'StudName': row[0],
-            'StudID': row[1],
-            'TarumtEmail': row[8],
-            'Programme': row[5],
-            'CompanyName': row[10],
-            'JobAllowance': row[11],
-            # Add other fields as needed
-        }
-        students.append(app_dict)
-    profile = "https://" + bucket + ".s3.amazonaws.com/" + stud_data[0] + "_profile.png"
+#     # Iterate through the fetched data and create dictionaries
+#     for row in stud_data:
+#         app_dict = {
+#             'StudName': row[0],
+#             'StudID': row[1],
+#             'TarumtEmail': row[8],
+#             'Programme': row[5],
+#             'CompanyName': row[10],
+#             'JobAllowance': row[11],
+#             # Add other fields as needed
+#         }
+#         students.append(app_dict)
+#     profile = "https://" + bucket + ".s3.amazonaws.com/" + stud_data[0] + "_profile.png"
 
-    return render_template('/studentList', students=students,profile=profile)
+#     return render_template('/studentList', students=students,profile=profile)
 
-@app.route("/studentList")
-def searchStudent():
-    student_name = request.form['searchName']
-    cursor = db_conn.cursor()
+# @app.route("/studentList")
+# def searchStudent():
+#     student_name = request.form['searchName']
+#     cursor = db_conn.cursor()
     
-    # Execute a SQL query to fetch data from the database
-    cursor.execute("""
-                   SELECT *
-                   FROM student
-                   WHERE LecturerEmail = %s AND StudName LIKE %s
-                   """, (session['LecturerEmail'], '%' + student_name + '%'))
-    stud_data = cursor.fetchall()  # Fetch all rows
+#     # Execute a SQL query to fetch data from the database
+#     cursor.execute("""
+#                    SELECT *
+#                    FROM student
+#                    WHERE LecturerEmail = %s AND StudName LIKE %s
+#                    """, (session['LecturerEmail'], '%' + student_name + '%'))
+#     stud_data = cursor.fetchall()  # Fetch all rows
     
-    cursor.close()
+#     cursor.close()
     
-    # Initialize an empty list to store dictionaries
-    students = []
+#     # Initialize an empty list to store dictionaries
+#     students = []
 
-    # Iterate through the fetched data and create dictionaries
-    for row in stud_data:
-        app_dict = {
-            'StudName': row[0],
-            'StudID': row[1],
-            'TarumtEmail': row[8],
-            'Programme': row[5],
-            'CompanyName': row[10],
-            'JobAllowance': row[11],
-            # Add other fields as needed
-        }
-        students.append(app_dict)
-    profile = "https://" + bucket + ".s3.amazonaws.com/" + stud_data[0] + "_profile.png"
+#     # Iterate through the fetched data and create dictionaries
+#     for row in stud_data:
+#         app_dict = {
+#             'StudName': row[0],
+#             'StudID': row[1],
+#             'TarumtEmail': row[8],
+#             'Programme': row[5],
+#             'CompanyName': row[10],
+#             'JobAllowance': row[11],
+#             # Add other fields as needed
+#         }
+#         students.append(app_dict)
+#     profile = "https://" + bucket + ".s3.amazonaws.com/" + stud_data[0] + "_profile.png"
 
-    return render_template('/studentList', students=students,profile=profile)
+#     return render_template('/studentList', students=students,profile=profile)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
