@@ -204,7 +204,7 @@ def loginLecturer():
             lecEmail = lecturer[3]  # Assuming 'lecEmail' is the first column in your SELECT statement
             # Store 'lecEmail' in the session
             session['LecturerEmail'] = lecEmail
-            return redirect(url_for('studentDashboard'))
+            return render_template('studentList.html')
         else:
             error_message='Login failed! Invalid email or password.'
             return render_template('lecturer-login.html', error_message=error_message)
