@@ -200,7 +200,9 @@ def loginLecturer():
         return render_template('studentList.html')
     else:
         error_message='Login failed! Invalid email or password.'
-        return error_message
+        return render_template('lecturer-login.html', error_message=error_message)
+
+    return render_template('lecturer-login.html', error_message=error_message)
 
 @app.route("/studentList.html")
 def studentDashboard():
