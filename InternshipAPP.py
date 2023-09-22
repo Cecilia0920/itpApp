@@ -194,17 +194,19 @@ def loginLecturer():
     cursor = db_conn.cursor()
     cursor.execute("SELECT * FROM Lecturer WHERE LecturerEmail = %s AND LecturerPassword = %s", (lecturerEmail, lecturerPassword))
     lecturer = cursor.fetchone()
-    #cursor.close()
+    cursor.close()
 
     if lecturer:
-        # Store lecturer information in a session
-        # Redirect to the student's dashboard
         return redirect(url_for('studentList'))
     else:
-        flash('Login failed! Invalid email or password.', 'danger')
-    cursor.close()
+        error_message='Login failed! Invalid email or password.'
+        return error_message
+        
     return render_template('lecturer-login.html', error_message=error_message)
 
+@app.route("/studentList.html")
+def studentDashboard():
+    return render_template('studentList.html', error_message=error_message)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
