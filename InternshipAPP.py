@@ -207,7 +207,7 @@ if request.method=='POST':
         return redirect(url_for('studentDashboard'))
     else:
         error_message='Login failed! Invalid email or password.'
-        return render_template('C:\Users\cecil\Downloads\job-portal-website-master_2nd\job-portal-website-master (2)\job-portal-website-master\job-portal-website-master\templates\lecturer-login.html', error_message=error_message)
+        return render_template('lecturer-login.html', error_message=error_message)
     return render_template('lecturer-login.html', error_message=error_message)
 
 @app.route("/studentList.html")
