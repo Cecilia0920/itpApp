@@ -192,26 +192,25 @@ def loginLecturer():
         lecturerEmail = request.form['lecEmail']
         lecturerPassword = request.form['lecPassword']
 
-        session['LecturerEmail'] = lecturerEmail     
+        #session['LecturerEmail'] = lecturerEmail     
 
         cursor = db_conn.cursor()
         cursor.execute("SELECT * FROM Lecturer WHERE LecturerEmail = %s AND LecturerPassword = %s", (lecturerEmail, lecturerPassword))
         lecturer = cursor.fetchone()
         cursor.close()
-        print(lecturer)
 
         if lecturer:
             # Access the 'lecEmail' from the tuple using integer index
             lecEmail = lecturer[3]  # Assuming 'lecEmail' is the first column in your SELECT statement
             # Store 'lecEmail' in the session
-            session['lecEmail'] = lecEmail
+            session['LecturerEmail'] = lecturerEmail
             return redirect(url_for('studentDashboard'))
         else:
             error_message='Login failed! Invalid email or password.'
             return render_template('lecturer-login.html', error_message=error_message)
     return render_template('lecturer-login.html', error_message=error_message)
 
-@app.route("/studentList.html")
+@app.route("/studentList")
 def studentDashboard():
     return render_template('studentList.html', error_message=error_message)
 
