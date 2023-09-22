@@ -223,18 +223,19 @@ def loginLecturer():
 #List & Search Student Function
 @app.route("/studentDashboardFunc", methods=['GET', 'POST'])
 def studentDashboard():
+    lecturer_email = session.get('LecturerEmail')
     cursor = db_conn.cursor()
-    lecEmail=session.get
+
     # Execute a SQL query to fetch data from the database
     cursor.execute("""
                    SELECT *
                    FROM student
                    WHERE LecturerEmail = %s
-                   """, (lecEmail))
+                   """, (lecturer_email,))
     stud_data = cursor.fetchall()  # Fetch all rows
-    
+
     cursor.close()
-    
+
     # Initialize an empty list to store dictionaries
     students = []
 
@@ -247,14 +248,13 @@ def studentDashboard():
             'Programme': row[5],
             'CompanyName': row[10],
             'JobAllowance': row[11],
+            # Add other fields as needed
         }
+        # Construct the profile image URL for each student
+        app_dict['profile_image'] = f"https://{bucket}.s3.amazonaws.com/{row[1]}_profile.png"
         students.append(app_dict)
-    # profile = "https://" + bucket + ".s3.amazonaws.com/" + stud_data[0] + "_profile.png"
-    profile_images = []
-    for student in students:
-        profile_url = f"https://{bucket}.s3.amazonaws.com/{student['StudID']}_profile.png"
-        profile_images.append(profile_url)
-    return render_template('/studentList', students=students,profile=profile_images)
+
+    return render_template('studentList.html', students=students)
 
 @app.route("/searchStudentFunc")
 def searchStudent():
