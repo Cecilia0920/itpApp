@@ -271,7 +271,7 @@
                 </form>
 
                 <!--Login Form-->
-                <form class="login" id="logInForm" style="display: none;" action="/lecturer-login" method="POST">
+                <form class="login" id="logInForm" style="display: none;" action="{{ url_for('lecturer-login') }}" method="POST">
                     <div class="formGroup">
                         <label for="lecEmail">Lecturer Email: </label>
                         <input type="email" placeholder="xxx@tarc.edu.my" name="lecEmail" id="logInEmail" required
