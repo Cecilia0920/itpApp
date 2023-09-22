@@ -166,6 +166,8 @@ def companyDetails():
 
     return render_template('company-login.html')
 
+#Lecturer Register & Login Func
+
 @app.route("/lecturer-register", methods=['GET', 'POST'])
 def addLecturer():
     lecturer_name = request.form['lecName']
@@ -182,7 +184,6 @@ def addLecturer():
 
     return render_template('lecturer-login.html')
 
-
 @app.route("/lecturer-login", methods=['GET', 'POST'])
 def loginLecturer():
     error_message = None  # Define error_message with a default value
@@ -196,15 +197,13 @@ def loginLecturer():
     cursor.close()
 
     if student:
-        # Store student information in a session
-        session['lecEmail'] = lecturerEmail  # Assuming student_id is in the second column of your Student table
+        # Store lecturer information in a session
+        session['lecEmail'] = lecturerEmail 
         # Redirect to the student's dashboard
         return redirect(url_for('studentList.html'))
     else:
         flash('Login failed! Invalid email or password.', 'danger')
     return render_template('lecturer-login.html', error_message=error_message)
-
-    
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
