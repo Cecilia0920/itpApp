@@ -157,6 +157,14 @@
 </head>
 
 <body>
+
+    <!-- Display error message as a popup -->
+  {% if error_message %}
+  <script>
+      alert("{{ error_message }}");
+  </script>
+  {% endif %}
+
     <div class="container-xxl bg-white p-0">
         <!-- Spinner Start -->
         <div id="spinner"
@@ -386,13 +394,6 @@
             }
 
         </script>
-
-        {% if error_msg %}
-        <script>
-            alert('{{error_msg}}');
-        </script>
-        {% set error_msg = None %}
-        {% endif%}
 </body>
 
 </html>
