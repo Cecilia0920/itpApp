@@ -198,6 +198,7 @@ def loginLecturer():
         cursor.execute("SELECT * FROM Lecturer WHERE LecturerEmail = %s AND LecturerPassword = %s", (lecturerEmail, lecturerPassword))
         lecturer = cursor.fetchone()
         cursor.close()
+        print(lecturer)
 
         if lecturer:
             # Access the 'lecEmail' from the tuple using integer index
