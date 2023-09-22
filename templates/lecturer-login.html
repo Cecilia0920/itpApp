@@ -79,7 +79,9 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
+
         }
+
 
         .loginBtn {
             margin-left: 10px;
@@ -105,6 +107,36 @@
             margin-bottom: 10px;
         }
 
+        select#studentGender {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #cccccc;
+            box-sizing: border-box;
+            color: #393a3a;
+            font-size: 16px;
+            /* Adjust the font size as needed */
+        }
+
+        /* Style for the options within the select element */
+        select#studentGender option {
+            background-color: #f9f9f9;
+            color: #393a3a;
+        }
+
+        textarea#HomeAddress {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #cccccc;
+            box-sizing: border-box;
+            color: #393a3a;
+            font-size: 16px;
+            /* Adjust the font size as needed */
+            margin-bottom: 10px;
+            /* Added margin for spacing */
+        }
+
         label {
             display: block;
             margin-bottom: 5px;
@@ -118,6 +150,7 @@
             box-sizing: border-box;
             color: #393a3a;
         }
+
 
         .formGroup label {
             display: block;
@@ -157,6 +190,12 @@
 </head>
 
 <body>
+    {% if show_msg %}
+        <script>
+            alert('{{ show_msg }}');
+        </script>
+        {% endif %}
+        
     <div class="container-xxl bg-white p-0">
         <!-- Spinner Start -->
         <div id="spinner"
@@ -228,50 +267,95 @@
             </div>
         </div>
         <!-- Header End -->
-       <!--display center-->
-       <div class="btn-container">
-        <button class="signUpBtn" onclick="showSignUpForm()" style="margin: 10%;">SIGN UP</button>
-        <button class="loginBtn" onclick="showLogInForm()">Login</button>
-    </div>
+        <!--display center-->
+        <div class="btn-container">
+            <button class="signUpBtn" onclick="showSignUpForm()" style="margin: 10%;">SIGN UP</button>
+            <button class="loginBtn" onclick="showLogInForm()">Login</button>
+        </div>
 
-    <div class="logInPage" style="display: none;">
-        <div class="form" style="padding-top: 50px; margin-top: -100px;">
-            <!--Sign Up Form-->
-                <form class="signUp" id="signUpForm" style="display: none;" action="/lecturer-register" method="post">
+        <div class="logInPage" style="display: none;">
+            <div class="form" style="padding-top: 50px; margin-top: -100px;">
+                <!--Sign Up Form-->
+                <form class="signUp" id="signUpForm" style="display: none;" action="student-login.html" method="get">
                     <div class="formGroup">
-                        <label for="lecName">Lecturer Name: </label>
-                        <input type="text" name="lecName" id="lecName" autocomplete="off" style="padding: 10px, bottom;">
+                        <label for="studentName">Student Name: </label>
+                        <input type="text" id="studentName" autocomplete="off" style="padding: 10px, bottom;">
                     </div>
                     <div class="formGroup">
-                        <label for="lecID">Lecturer ID: </label>
-                        <input type="text" name="lecID" id="lecID" autocomplete="off" style="padding: 10px, bottom;">
+                        <label for="studentID">Student ID: </label>
+                        <input type="text" id="studentID" autocomplete="off" style="padding: 10px, bottom;">
                     </div>
                     <div class="formGroup">
-                        <label for="lecNRIC">NRIC: </label>
-                        <input type="text" name="lecNRIC" id="lecNRIC" autocomplete="off" style="padding: 10px, bottom;">
+                        <label for="studentNRIC">NRIC Number: </label>
+                        <input type="text" id="studentNRIC" autocomplete="off" style="padding: 10px, bottom;">
                     </div>
                     <div class="formGroup">
-                        <label for="lecEmail">Lecturer Email: </label>
-                        <input type="email" placeholder="xxx@tarc.edu.my" name="lecEmail" id="lecEmail" required
+                        <label for="studentGender">Gender:</label>
+                        <select id="studentGender" autocomplete="off">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="formGroup">
+                        <label for="progStudy">Programme of Study: </label>
+                        <input type="text" id="progStudy" autocomplete="off" style="padding: 10px, bottom;">
+                    </div>
+                    <div class="formGroup">
+                        <label for="faculty">Faculty: </label>
+                        <input type="text" id="faculty" autocomplete="off" style="padding: 10px, bottom;">
+                    </div>
+                    <div class="formGroup">
+                        <label for="cgpa">CGPA: </label>
+                        <input type="text" id="cgpa" autocomplete="off" style="padding: 10px, bottom;">
+                    </div>
+                    <div class="formGroup">
+                        <label for="StudentEmail">TARUMT Email: </label>
+                        <input type="email" placeholder="xxx-wm99@student.tarc.edu.my" name="email" id="StudentEmail"
+                            required autocomplete="off">
+                    </div>
+                    <div class="formGroup">
+                        <label for="studentMobileNum">Mobile Number: </label>
+                        <input type="tel" id="studentMobileNum" autocomplete="off" style="padding: 10px, bottom;">
+                    </div>
+                    <div class="formGroup">
+                        <label for="internBatch">Intern Batch: </label>
+                        <input type="text" id="internBatch" placeholder="FEB 2024" autocomplete="off"
+                            style="padding: 10px, bottom;">
+                    </div>
+                    <div class="formGroup">
+                        <label for="HomeAddress">Home Address: </label>
+                        <textarea id="HomeAddress" name="Home_Address" rows="6" cols="59" required></textarea>
+                        <input id="HomeAddress" autocomplete="off" style="padding: 10px, bottom;" rows="6" cols="59">
+                    </div>
+                    <div class="formGroup">
+                        <label for="StudentPersonalEmail">Personal Email: </label>
+                        <input type="email" placeholder="xxx@gmail.com" name="email" id="StudentPersonalEmail" required
                             autocomplete="off">
                     </div>
                     <div class="formGroup">
-                        <label for="lecPassword">Password:</label>
-                        <input type="password"  name="lecPassword" id="lecPassword" required autocomplete="off">
+                        <label for="studentProfilePhoto">Profile Photo:</label>
+                        <input type="file" id="studentProfilePhoto" name="profilePhoto" accept="image/*">
                     </div>
                     <div class="formGroup">
-                        <label for="lecPassword">Confirm Password :</label>
-                        <input type="password" name="lecPassword" id="lecPassword" required
+                        <label for="studPassword">Password:</label>
+                        <input type="password" id="studPassword" required autocomplete="off">
+                    </div>
+                    <div class="formGroup">
+                        <label for="studPassword">Confirm Password :</label>
+                        <input type="password" id="studPassword" required
                             autocomplete="off">
                     </div>
-
+                    <div class="checkBox" style="padding-bottom: 20px;">
+                        <input type="checkbox" name="checkbox" id="checkbox" style="margin-left: -295px;">
+                        <span class="text" style="margin-left: -280px;">I agree with term & conditions</span>
+                    </div>
                     <div class="formGroup">
                         <button type="submit" class="btn2"><span>REGISTER</span></button>
                     </div>
                 </form>
 
                 <!--Login Form-->
-                <form class="login" id="logInForm" style="display: none;" action="/login-lecturer" method="post">
+                <form class="login" id="logInForm" style="display: none;" action="/lecturer-login" method="post">
                     <div class="formGroup">
                         <input type="email" placeholder="xxx@tarc.edu.my" name="lecEmail" id="logInEmail" required
                             autocomplete="off" style="color: #393a3a;">
@@ -280,6 +364,11 @@
                         <input type="password" placeholder="Password" id="lecPassword" name="lecPassword" required autocomplete="off"
                             style="color: #393a3a;">
 
+                    </div>
+                    <div class="checkBox" style="margin-bottom: 15px;">
+                        <input type="checkbox" name="checkbox" id="checkbox"
+                            style="color: #393a3a; margin-left: -295px;">
+                        <span class="text" style="margin-left: -280px;">Keep me signed in on this device</span>
                     </div>
                     <div class="formGroup">
                         <button type="submit" class="btn2" id="log">LOGIN</button>
