@@ -147,26 +147,32 @@ def AddCompany():
 
     return render_template('company-login.html')
 
-@app.route("/get-company-details", methods=['GET', 'POST'])
-def companyDetails():
-    company_email = request.form['Company_Email']
-    session['company_email'] = company_email
+
+
+@app.route("/company-post-job", methods=['GET', 'POST'])
+def companyPostJob():
+    company_email = session.get('company_email')
 
     cursor = db_conn.cursor()
     cursor.execute('SELECT * FROM Company_Profile WHERE Company_Email = %s', (company_email))
     company_details = cursor.fetchone()
 
-    if company_details:
-        # Pass the company_details to the template for rendering
-        logo = "https://" + bucket + ".s3.amazonaws.com/" + company_details[0] + "_logo.png"
-        return render_template('company-profile.html', company_details=company_details, logo=logo)
-    else:
-        # Handle the case where the company is not found
-        return "Invalid Company"
+    companyName = company_details[0]
+    jobTitle = request.form['jobTitle']
+    jobDescription = request.form['jobDescription']
+    jobRequirements = request.form['jobRequirements']
+    jobBenefits = request.form['jobBenefits']
+    salary = request.form['salary']
+    jobType = request.form['jobType']
+    logo = "https://" + bucket + ".s3.amazonaws.com/" + company_details[0] + "_logo.png"
 
-    return render_template('company-login.html')
+    insert_sql = "INSERT INTO Post_Job VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    cursor = db_conn.cursor()
+    cursor.execute(insert_sql, (companyName, jobTitle, jobDescription, jobRequirements, jobBenefits, salary, jobType))
+    db_conn.commit()
+    cursor.close()
 
-#Lecturer Register & Login Func
+    return render_template('company-profile.html', company_details=company_details, logo=logo)
 
 @app.route("/lecturer-register", methods=['GET', 'POST'])
 def addLecturer():
@@ -186,117 +192,119 @@ def addLecturer():
 
 @app.route("/lecturer-login", methods=['GET', 'POST'])
 def loginLecturer():
-    error_message = None  # Define error_message with a default value
-
+    error_message = None  
+    print("lecturer")
     if request.method=='POST':
         lecturerEmail = request.form['lecEmail']
         lecturerPassword = request.form['lecPassword']
-
-        #session['LecturerEmail'] = lecturerEmail     
-
         cursor = db_conn.cursor()
         cursor.execute("SELECT * FROM Lecturer WHERE LecturerEmail = %s AND LecturerPassword = %s", (lecturerEmail, lecturerPassword))
         lecturer = cursor.fetchone()
         cursor.close()
+        print("lecturer")
 
         if lecturer:
-            # Access the 'lecEmail' from the tuple using integer index
-            lecEmail = lecturer[3]  # Assuming 'lecEmail' is the first column in your SELECT statement
-            # Store 'lecEmail' in the session
-            session['LecturerEmail'] = lecEmail
             return render_template('studentList.html')
         else:
             error_message='Login failed! Invalid email or password.'
-            return render_template('lecturer-login.html', error_message=error_message)
-    return render_template('lecturer-login.html', error_message=error_message)
+            return render_template('lecturer-login.html',error_message)
+        
+    return render_template('lecturer-login.html',error_message)
 
+# Add Student Supervised Function
+@app.route("/addStudent", methods=['GET', 'POST'])
+def assignSupervisor():
+    student_id = request.form['StudentID']
+    student_name = request.form['StudentName']
+    supervisorEmail=session['LecturerEmail']
+    update_sql = "UPDATE Student SET SupervisorEmail=%s WHERE StudID=%s AND StudName=%s"
+    cursor = db_conn.cursor()
+
+    cursor.execute(update_sql, (supervisorEmail,student_id,student_name))
+    db_conn.commit()
+    student_data = cursor.fetchone()
+    cursor.close()
+
+    if student_data:
+        session['LecturerEmail'] = supervisorEmail     
+        cursor = db_conn.cursor()
+        cursor.execute('SELECT * FROM Student WHERE SupervisorEmail=%s',(supervisorEmail))
+        rows = cursor.fetchall()
+        cursor.close()
+
+    return render_template('studentList.html', rows=rows,lecEmail=supervisorEmail)
+
+# List & Search Student Function
 @app.route("/studentList")
 def studentDashboard():
-    return render_template('studentList.html')
+    cursor = db_conn.cursor()
+    
+    # Execute a SQL query to fetch data from the database
+    cursor.execute("""
+                   SELECT *
+                   FROM student
+                   WHERE LecturerEmail = %s
+                   """, (session['LecturerEmail']))
+    stud_data = cursor.fetchall()  # Fetch all rows
+    
+    cursor.close()
+    
+    # Initialize an empty list to store dictionaries
+    students = []
+
+    # Iterate through the fetched data and create dictionaries
+    for row in stud_data:
+        app_dict = {
+            'StudName': row[0],
+            'StudID': row[1],
+            'TarumtEmail': row[8],
+            'Programme': row[5],
+            'CompanyName': row[10],
+            'JobAllowance': row[11],
+            # Add other fields as needed
+        }
+        students.append(app_dict)
+    profile = "https://" + bucket + ".s3.amazonaws.com/" + stud_data[0] + "_profile.png"
+
+    return render_template('/studentList', students=students,profile=profile)
+
+@app.route("/studentList")
+def searchStudent():
+    student_name = request.form['searchName']
+    cursor = db_conn.cursor()
+    
+    # Execute a SQL query to fetch data from the database
+    cursor.execute("""
+                   SELECT *
+                   FROM student
+                   WHERE LecturerEmail = %s AND StudName LIKE %s
+                   """, (session['LecturerEmail'], '%' + student_name + '%'))
+    stud_data = cursor.fetchall()  # Fetch all rows
+    
+    cursor.close()
+    
+    # Initialize an empty list to store dictionaries
+    students = []
+
+    # Iterate through the fetched data and create dictionaries
+    for row in stud_data:
+        app_dict = {
+            'StudName': row[0],
+            'StudID': row[1],
+            'TarumtEmail': row[8],
+            'Programme': row[5],
+            'CompanyName': row[10],
+            'JobAllowance': row[11],
+            # Add other fields as needed
+        }
+        students.append(app_dict)
+    profile = "https://" + bucket + ".s3.amazonaws.com/" + stud_data[0] + "_profile.png"
+
+    return render_template('/studentList', students=students,profile=profile)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
 
-
-# List & Search Student Function
-# @app.route("/studentList")
-# def studentList():
-    
-#     cursor = db_conn.cursor()
-#     # Execute a SQL query to fetch data from the database
-#     cursor.execute("SELECT cohortID FROM cohort")
-#     cohorts = cursor.fetchall()  # Fetch all rows
-    
-#     # Execute a SQL query to fetch data from the database
-#     cursor.execute("""
-#                    SELECT *
-#                    FROM student
-#                    WHERE LecturerEmail = %s
-#                    """, session['LecturerEmail'])
-#     stud_data = cursor.fetchall()  # Fetch all rows
-    
-#     cursor.close()
-    
-#     # Initialize an empty list to store dictionaries
-#     students = []
-
-#     # Iterate through the fetched data and create dictionaries
-#     for row in stud_data:
-#         app_dict = {
-#             'StudName': row[0],
-#             'StudID': row[1],
-#             'TarumtEmail': row[8],
-#             'Programme': row[5],
-#             'CompanyName': row[10],
-#             'JobAllowance': row[11],
-#             # Add other fields as needed
-#         }
-#         students.append(app_dict)
-#     logo = "https://" + bucket + ".s3.amazonaws.com/" + stud_data[0] + "_logo.png"
-
-#     return render_template('/studentList', students=students,logo=logo)
-
-
-# @app.route("/searchStudent", methods=['GET', 'POST'])
-# def searchEmp():
-#     return render_template('studentList.html')
-
-# @app.route("/searchStuProcess", methods=['GET', 'POST'])
-# def searchEmpProcess():
-#     student_id = request.form['StudID']
-
-#     search_sql = "SELECT * FROM Student WHERE StudID=%s"
-#     cursor = db_conn.cursor()
-
-#     cursor.execute(search_sql, (student_id))
-#     rows = cursor.fetchall()
-#     cursor.close()  
-
-#     return render_template('studentList.html', rows=rows)
-
-# # Add Student Supervised Function
-# @app.route("/addStudent", methods=['GET', 'POST'])
-# def addEmp():
-#     return render_template('addStudent.html')
-
-# @app.route("/addEmpProcess", methods=['GET', 'POST'])
-# def addEmpProcess():
-#     student_id = request.form['StudID']
-#     student_name = request.form['StudName']
-
-#     update_sql = "UPDATE Student SET SupervisorEmail=%s WHERE StudID=%s"
-#     cursor = db_conn.cursor()
-
-#     cursor.execute(update_sql, (student_id))
-#     db_conn.commit()
-#     cursor.close()
-
-#     cursor = db_conn.cursor()
-#     cursor.execute('SELECT * FROM Student')
-#     rows = cursor.fetchall()
-#     cursor.close()
-
-#     return render_template('studentList.html', rows=rows)
 
 # Show Student Details Function
 # @app.route("/lecturer/studentDetail")
