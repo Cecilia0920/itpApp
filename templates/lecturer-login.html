@@ -386,6 +386,13 @@
             }
 
         </script>
+
+        {% if error_msg %}
+        <script>
+            alert('{{error_msg}}');
+        </script>
+        {% set error_msg = None %}
+        {% end if%}
 </body>
 
 </html>
