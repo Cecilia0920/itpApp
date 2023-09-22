@@ -204,7 +204,7 @@ if request.method=='POST':
         lecEmail = lecturer[3]  # Assuming 'lecEmail' is the first column in your SELECT statement
         # Store 'lecEmail' in the session
         session['lecEmail'] = lecEmail
-        return render_template(url_for('studentList.html')
+        return render_template(url_for('studentList.html'))
     else:
         error_message='Login failed! Invalid email or password.'
         return render_template('lecturer-login.html', error_message=error_message)
