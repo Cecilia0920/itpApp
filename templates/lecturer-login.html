@@ -159,11 +159,11 @@
 <body>
 
     <!-- Display error message as a popup -->
-  {% if error_message %}
-  <script>
-      alert("{{ error_message }}");
-  </script>
-  {% endif %}
+    {% if error_message %}
+    <div class="alert alert-danger">
+        {{ error_message }}
+    </div>
+    {% endif %}
 
     <div class="container-xxl bg-white p-0">
         <!-- Spinner Start -->
