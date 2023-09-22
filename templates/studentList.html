@@ -124,22 +124,21 @@
                         </li>
                     </ul>
                     <div class="row">
-                        {% for student, profile_image in zip(students, profile_images) %}
+                        {% for student in students %}
                         <div class="col-md-6 col-lg-4 mb-4">
                           <div class="card">
-                            <img src="{{ profile_image }}" class="card-img-top" alt="{{ student.StudName }} Profile">
+                            <img src="{{ student.profile_image }}" class="card-img-top" alt="{{ student.StudName }} Profile">
                             <div class="card-body">
                               <h5 class="card-title">{{ student.StudName }}</h5>
                               <p class="card-text">{{ student.Programme }}</p>
                               <p class="card-text">{{ student.CompanyName }}</p>
-                              <p class="card-text">{{ student.JobTitle }}</p>
                               <p class="card-text">{{ student.JobAllowance }}</p>
                               <a href="/viewReport/{{ student.StudID }}" class="btn btn-primary">View Report</a>
                             </div>
                           </div>
                         </div>
                         {% endfor %}
-                      </div>                                
+                      </div>                                                   
                 </div>
             </div>
         </div>
