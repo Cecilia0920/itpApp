@@ -224,13 +224,13 @@ def loginLecturer():
 @app.route("/studentDashboardFunc", methods=['GET', 'POST'])
 def studentDashboard():
     cursor = db_conn.cursor()
-    email=session.get
+    lecEmail=session.get
     # Execute a SQL query to fetch data from the database
     cursor.execute("""
                    SELECT *
                    FROM student
                    WHERE LecturerEmail = %s
-                   """, (email))
+                   """, (lecEmail))
     stud_data = cursor.fetchall()  # Fetch all rows
     
     cursor.close()
@@ -247,24 +247,26 @@ def studentDashboard():
             'Programme': row[5],
             'CompanyName': row[10],
             'JobAllowance': row[11],
-            # Add other fields as needed
         }
         students.append(app_dict)
-    profile = "https://" + bucket + ".s3.amazonaws.com/" + stud_data[0] + "_profile.png"
-
-    return render_template('/studentList', students=students,profile=profile)
+    # profile = "https://" + bucket + ".s3.amazonaws.com/" + stud_data[0] + "_profile.png"
+    profile_images = []
+    for student in students:
+        profile_url = f"https://{bucket}.s3.amazonaws.com/{student['StudID']}_profile.png"
+        profile_images.append(profile_url)
+    return render_template('/studentList', students=students,profile=profile_images)
 
 @app.route("/searchStudentFunc")
 def searchStudent():
     student_name = request.form['searchName']
     cursor = db_conn.cursor()
-    
+    lecEmail=session.get
     # Execute a SQL query to fetch data from the database
     cursor.execute("""
                    SELECT *
                    FROM student
                    WHERE LecturerEmail = %s AND StudName LIKE %s
-                   """, (session['LecturerEmail'], '%' + student_name + '%'))
+                   """, (lecEmail, '%' + student_name + '%'))
     stud_data = cursor.fetchall()  # Fetch all rows
     
     cursor.close()
@@ -284,9 +286,11 @@ def searchStudent():
             # Add other fields as needed
         }
         students.append(app_dict)
-    profile = "https://" + bucket + ".s3.amazonaws.com/" + stud_data[0] + "_profile.png"
-
-    return render_template('/studentList', students=students,profile=profile)
+    profile_images = []
+    for student in students:
+        profile_url = f"https://{bucket}.s3.amazonaws.com/{student['StudID']}_profile.png"
+        profile_images.append(profile_url)
+    return render_template('/studentList', students=students,profile=profile_images)
 
 # Add Student Supervised Function
 @app.route("/assignSupervisorFunc", methods=['GET', 'POST'])
