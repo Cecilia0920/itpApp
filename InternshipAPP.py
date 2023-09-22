@@ -197,7 +197,7 @@ def loginLecturer():
     cursor.close()
 
     if lecturer:
-        return redirect(url_for('studentList'))
+        return render_template('studentList.html')
     else:
         error_message='Login failed! Invalid email or password.'
         return error_message
