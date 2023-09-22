@@ -184,7 +184,7 @@ def addLecturer():
 
     return render_template('lecturer-login.html')
 
-@app.route("/templates/lecturer-login", methods=['GET', 'POST'])
+@app.route("/lecturer-login", methods=['GET', 'POST'])
 def loginLecturer():
     error_message = None  # Define error_message with a default value
 
@@ -207,12 +207,12 @@ def loginLecturer():
             return redirect(url_for('studentDashboard'))
         else:
             error_message='Login failed! Invalid email or password.'
-            return render_template('templates/lecturer-login.html', error_message=error_message)
-    return render_template('templates/lecturer-login.html', error_message=error_message)
+            return render_template('lecturer-login.html', error_message=error_message)
+    return render_template('lecturer-login.html', error_message=error_message)
 
 @app.route("/studentList.html")
 def studentDashboard():
-    return render_template('templates/studentList.html', error_message=error_message)
+    return render_template('studentList.html', error_message=error_message)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
