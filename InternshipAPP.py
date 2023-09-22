@@ -147,7 +147,24 @@ def AddCompany():
 
     return render_template('company-login.html')
 
+@app.route("/get-company-details", methods=['GET', 'POST'])
+def companyDetails():
+    company_email = request.form['Company_Email']
+    company_password = request.form['Password']
+    session['company_email'] = company_email
 
+    cursor = db_conn.cursor()
+    cursor.execute('SELECT * FROM Company_Profile WHERE Company_Email = %s AND Password = %s', (company_email, company_password))
+    company_details = cursor.fetchone()
+
+    if company_details:
+        # Pass the company_details to the template for rendering
+        logo = "https://" + bucket + ".s3.amazonaws.com/" + company_details[0] + "_logo.png"
+        return render_template('company-profile.html', company_details=company_details, logo=logo)
+    else:
+        # Handle the case where the company is not found
+        error_message = "Invalid Company"
+        return render_template('company-login.html', error_message=error_message)
 
 @app.route("/company-post-job", methods=['GET', 'POST'])
 def companyPostJob():
@@ -190,26 +207,17 @@ def addLecturer():
 
     return render_template('lecturer-login.html')
 
-@app.route("/lecturer-login", methods=['GET', 'POST'])
+@app.route("/login-lecturer", methods=['GET', 'POST'])
 def loginLecturer():
-    error_message = None  
-    print("lecturer")
-    if request.method=='POST':
-        lecturerEmail = request.form['lecEmail']
-        lecturerPassword = request.form['lecPassword']
-        cursor = db_conn.cursor()
-        cursor.execute("SELECT * FROM Lecturer WHERE LecturerEmail = %s AND LecturerPassword = %s", (lecturerEmail, lecturerPassword))
-        lecturer = cursor.fetchone()
-        cursor.close()
-        print("lecturer")
+    lecturerEmail = request.form['lecEmail']
+    lecturerPassword = request.form['lecPassword']
+    cursor = db_conn.cursor()
+    cursor.execute("SELECT * FROM Lecturer WHERE LecturerEmail = %s AND LecturerPassword = %s", (lecturerEmail, lecturerPassword))
+    lecturer = cursor.fetchone()
+    cursor.close()
 
-        if lecturer:
-            return render_template('studentList.html')
-        else:
-            error_message='Login failed! Invalid email or password.'
-            return render_template('lecturer-login.html',error_message)
-        
-    return render_template('lecturer-login.html',error_message)
+    if lecturer:
+        return render_template('studentList.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
