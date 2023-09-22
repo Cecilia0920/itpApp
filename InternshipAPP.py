@@ -203,7 +203,7 @@ def loginLecturer():
             # Access the 'lecEmail' from the tuple using integer index
             lecEmail = lecturer[3]  # Assuming 'lecEmail' is the first column in your SELECT statement
             # Store 'lecEmail' in the session
-            session['LecturerEmail'] = lecturerEmail
+            session['LecturerEmail'] = lecEmail
             return redirect(url_for('studentDashboard'))
         else:
             error_message='Login failed! Invalid email or password.'
