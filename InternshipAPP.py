@@ -188,26 +188,26 @@ def addLecturer():
 def loginLecturer():
     error_message = None  # Define error_message with a default value
 
-if request.method=='POST':
-    lecturerEmail = request.form['lecEmail']
-    lecturerPassword = request.form['lecPassword']
+    if request.method=='POST':
+        lecturerEmail = request.form['lecEmail']
+        lecturerPassword = request.form['lecPassword']
 
-    session['LecturerEmail'] = lecturerEmail     
+        session['LecturerEmail'] = lecturerEmail     
 
-    cursor = db_conn.cursor()
-    cursor.execute("SELECT * FROM Lecturer WHERE LecturerEmail = %s AND LecturerPassword = %s", (lecturerEmail, lecturerPassword))
-    lecturer = cursor.fetchone()
-    cursor.close()
+        cursor = db_conn.cursor()
+        cursor.execute("SELECT * FROM Lecturer WHERE LecturerEmail = %s AND LecturerPassword = %s", (lecturerEmail, lecturerPassword))
+        lecturer = cursor.fetchone()
+        cursor.close()
 
-    if lecturer:
-        # Access the 'lecEmail' from the tuple using integer index
-        lecEmail = lecturer[3]  # Assuming 'lecEmail' is the first column in your SELECT statement
-        # Store 'lecEmail' in the session
-        session['lecEmail'] = lecEmail
-        return redirect(url_for('studentDashboard'))
-    else:
-        error_message='Login failed! Invalid email or password.'
-        return render_template('lecturer-login.html', error_message=error_message)
+        if lecturer:
+            # Access the 'lecEmail' from the tuple using integer index
+            lecEmail = lecturer[3]  # Assuming 'lecEmail' is the first column in your SELECT statement
+            # Store 'lecEmail' in the session
+            session['lecEmail'] = lecEmail
+            return redirect(url_for('studentDashboard'))
+        else:
+            error_message='Login failed! Invalid email or password.'
+            return render_template('lecturer-login.html', error_message=error_message)
     return render_template('lecturer-login.html', error_message=error_message)
 
 @app.route("/studentList.html")
