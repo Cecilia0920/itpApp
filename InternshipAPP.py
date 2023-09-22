@@ -212,7 +212,7 @@ def loginLecturer():
 
 @app.route("/studentList")
 def studentDashboard():
-    return render_template('studentList.html', error_message=error_message)
+    return render_template('studentList.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
