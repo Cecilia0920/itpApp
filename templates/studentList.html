@@ -109,97 +109,37 @@
                     <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
                 <!-- search bar right align -->
                 <div class="studentSearch">
-                    <form action="#">
+                    <form action="/searchStudent">
                         <input type="text"
-                            placeholder="Search Student"
-                            name="studentSearch">
+                            placeholder="Search Student Name"
+                            name="searchName">
                         <button>
                             <i class="fa fa-search"
                             style="font-size: 18px;">
                             </i>
                         </button>
-                        <a class="round-button" href="/addStudent">+</a>
+                        <a class="round-button" href="/addStudent" action="/assignSupervisor">+</a>
                     </form>
                 </div>
                         </li>
                     </ul>
-                    <div class="tab-content" action="/studentList" method="POST">
-                        <div id="tab-1" class="tab-pane fade show p-0 active">
-                            <div class="job-item p-4 mb-4">
-                                <div class="row g-4">
-                                    <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                        <img class="flex-shrink-0 img-fluid border rounded" src="/assets/img/student1.jpg" alt="" style="width: 80px; height: 80px;">
-                                        <div class="text-start ps-4">
-                                            <h5 class="mb-3">Fong Ling Ling</h5>
-                                            <span class="text-truncate me-3"><i class="fas fa-book-open text-primary me-2"></i>Programme</span>
-                                            <span class="text-truncate me-3"><i class="fas fa-address-book text-primary me-2"></i>Company A</span>
-                                            <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                        <div class="d-flex mb-3">
-                                            <a class="btn btn-primary" href="/viewReport">View Report</a>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="row">
+                        {% for student, profile_image in zip(students, profile_images) %}
+                        <div class="col-md-6 col-lg-4 mb-4">
+                          <div class="card">
+                            <img src="{{ profile_image }}" class="card-img-top" alt="{{ student.StudName }} Profile">
+                            <div class="card-body">
+                              <h5 class="card-title">{{ student.StudName }}</h5>
+                              <p class="card-text">{{ student.Programme }}</p>
+                              <p class="card-text">{{ student.CompanyName }}</p>
+                              <p class="card-text">{{ student.JobTitle }}</p>
+                              <p class="card-text">{{ student.JobAllowance }}</p>
+                              <a href="/viewReport/{{ student.StudID }}" class="btn btn-primary">View Report</a>
                             </div>
-                            <div class="job-item p-4 mb-4">
-                                <div class="row g-4">
-                                    <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                        <img class="flex-shrink-0 img-fluid border rounded" src="/assets/img/student2.jpg" alt="" style="width: 80px; height: 80px;">
-                                        <div class="text-start ps-4">
-                                            <h5 class="mb-3">Joanne Larrer</h5>
-                                            <span class="text-truncate me-3"><i class="	fas fa-book-open text-primary me-2"></i>Programme</span>
-                                            <span class="text-truncate me-3"><i class="fas fa-address-book text-primary me-2"></i>CompanyB</span>
-                                            <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                        <div class="d-flex mb-3">
-                                            <a class="btn btn-primary" href="/viewReport">View Report</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="job-item p-4 mb-4">
-                                <div class="row g-4">
-                                    <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                        <img class="flex-shrink-0 img-fluid border rounded" src="/assets/img/student3.jpg" alt="" style="width: 80px; height: 80px;">
-                                        <div class="text-start ps-4">
-                                            <h5 class="mb-3">Wong Yi Man</h5>
-                                            <span class="text-truncate me-3"><i class="fas fa-book-open text-primary me-2"></i>Programme</span>
-                                            <span class="text-truncate me-3"><i class="fas fa-address-book text-primary me-2"></i>CompanyC</span>
-                                            <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                        <div class="d-flex mb-3">
-                                            <a class="btn btn-primary" href="/viewReport">View Report</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="job-item p-4 mb-4">
-                                <div class="row g-4">
-                                    <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                        <img class="flex-shrink-0 img-fluid border rounded" src="/assets/img/student4.jpg" alt="" style="width: 80px; height: 80px;">
-                                        <div class="text-start ps-4">
-                                            <h5 class="mb-3">Zues Yang Feng Lam</h5>
-                                            <span class="text-truncate me-3"><i class="fas fa-book-open text-primary me-2"></i>Programme</span>
-                                            <span class="text-truncate me-3"><i class="fas fa-address-book text-primary me-2"></i>CompanyD</span>
-                                            <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                        <div class="d-flex mb-3">
-                                            <a class="btn btn-primary" href="/viewReport">View Report</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a class="btn btn-primary py-3 px-5" href="">Next Page</a>
+                          </div>
                         </div>
-                    </div>
+                        {% endfor %}
+                      </div>                                
                 </div>
             </div>
         </div>
