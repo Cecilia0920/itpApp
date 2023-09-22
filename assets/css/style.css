@@ -1,1245 +1,217 @@
-/********** Template CSS **********/
-:root {
-    --primary: #00B074;
-    --secondary: #2B9BFF;
-    --light: #EFFDF5;
-    --dark: #2B3940;
-}
-
-.back-to-top {
-    position: fixed;
-    display: none;
-    right: 45px;
-    bottom: 45px;
-    z-index: 99;
-}
-
-
-/*** Spinner ***/
-#spinner {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .5s ease-out, visibility 0s linear .5s;
-    z-index: 99999;
-}
-
-#spinner.show {
-    transition: opacity .5s ease-out, visibility 0s linear 0s;
-    visibility: visible;
-    opacity: 1;
-}
-
-
-/*** Button ***/
-.btn {
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    transition: .5s;
-}
-
-.btn.btn-primary,
-.btn.btn-secondary {
-    color: #FFFFFF;
-}
-
-.btn-square {
-    width: 38px;
-    height: 38px;
-}
-
-.btn-sm-square {
-    width: 32px;
-    height: 32px;
-}
-
-.btn-lg-square {
-    width: 48px;
-    height: 48px;
-}
-
-.btn-square,
-.btn-sm-square,
-.btn-lg-square {
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: normal;
-    border-radius: 2px;
-}
-
-
-/*** Navbar ***/
-.navbar .dropdown-toggle::after {
-    border: none;
-    content: "\f107";
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    vertical-align: middle;
-    margin-left: 5px;
-    transition: .5s;
-}
-
-.navbar .dropdown-toggle[aria-expanded=true]::after {
-    transform: rotate(-180deg);
-}
-
-.navbar-dark .navbar-nav .nav-link,
-.navbar-light .navbar-nav .nav-link {
-    margin-right: 30px;
-    padding: 25px 0;
-    color: #FFFFFF;
-    font-size: 15px;
-    text-transform: uppercase;
-    outline: none;
-}
-
-.navbar-dark .navbar-nav .nav-link:hover,
-.navbar-dark .navbar-nav .nav-link.active,
-.navbar-light .navbar-nav .nav-link:hover,
-.navbar-light .navbar-nav .nav-link.active {
-    color: var(--primary);
-}
-
-@media (max-width: 991.98px) {
-    .navbar-dark .navbar-nav .nav-link,
-    .navbar-light .navbar-nav .nav-link  {
-        margin-right: 0;
-        padding: 10px 0;
-    }
-
-    .navbar-light .navbar-nav {
-        border-top: 1px solid #EEEEEE;
-    }
-}
-
-.navbar-light .navbar-brand,
-.navbar-light a.btn {
-    height: 75px;
-}
-
-.navbar-light .navbar-nav .nav-link {
-    color: var(--dark);
-    font-weight: 500;
-}
-
-.navbar-light.sticky-top {
-    top: -100px;
-    transition: .5s;
-}
-
-@media (min-width: 992px) {
-    .navbar .nav-item .dropdown-menu {
-        display: block;
-        top: 100%;
-        margin-top: 0;
-        transform: rotateX(-75deg);
-        transform-origin: 0% 0%;
-        opacity: 0;
-        visibility: hidden;
-        transition: .5s;
-        
-    }
-
-    .navbar .nav-item:hover .dropdown-menu {
-        transform: rotateX(0deg);
-        visibility: visible;
-        transition: .5s;
-        opacity: 1;
-    }
-}
-
-
-/*** Header ***/
-.header-carousel .container,
-.page-header .container {
-    position: relative;
-    padding: 45px 0 45px 35px;
-    border-left: 15px solid var(--primary);
-}
-
-.header-carousel .container::before,
-.header-carousel .container::after,
-.page-header .container::before,
-.page-header .container::after {
-    position: absolute;
-    content: "";
-    top: 0;
-    left: 0;
-    width: 100px;
-    height: 15px;
-    background: var(--primary);
-}
-
-.header-carousel .container::after,
-.page-header .container::after {
-    top: 100%;
-    margin-top: -15px;
-}
-
-@media (max-width: 768px) {
-    .header-carousel .owl-carousel-item {
-        position: relative;
-        min-height: 500px;
-    }
-    
-    .header-carousel .owl-carousel-item img {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .header-carousel .owl-carousel-item p {
-        font-size: 14px !important;
-        font-weight: 400 !important;
-    }
-
-    .header-carousel .owl-carousel-item h1 {
-        font-size: 30px;
-        font-weight: 600;
-    }
-}
-
-.header-carousel .owl-nav {
-    position: absolute;
-    top: 50%;
-    right: 8%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-}
-
-.header-carousel .owl-nav .owl-prev,
-.header-carousel .owl-nav .owl-next {
-    margin: 7px 0;
-    width: 45px;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #FFFFFF;
-    background: transparent;
-    border: 1px solid #FFFFFF;
-    border-radius: 2px;
-    font-size: 22px;
-    transition: .5s;
-}
-
-.header-carousel .owl-nav .owl-prev:hover,
-.header-carousel .owl-nav .owl-next:hover {
-    background: var(--primary);
-    border-color: var(--primary);
-}
-
-.page-header {
-    background: linear-gradient(rgba(43, 57, 64, .5), rgba(43, 57, 64, .5)), url(../img/carousel-1.jpg) center center no-repeat;
-    background-size: cover;
-}
-
-.breadcrumb-item + .breadcrumb-item::before {
-    color: var(--light);
-}
-
-
-/*** About ***/
-.about-bg {
-    background-image: -webkit-repeating-radial-gradient(center center, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent 100%);
-    background-image: -moz-repeating-radial-gradient(center center, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent 100%);
-    background-image: -ms-repeating-radial-gradient(center center, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent 100%);
-    background-image: -o-repeating-radial-gradient(center center, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent 100%);
-    background-image: repeating-radial-gradient(center center, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 1px, transparent 1px, transparent 100%);
-    background-size: 5px 5px;
-}
-
-
-/*** Category ***/
-.cat-item {
-    display: block;
-    box-shadow: 0 0 45px rgba(0, 0, 0, .08);
-    border: 1px solid transparent;
-    transition: .5s;
-}
-
-.cat-item:hover {
-    border-color: rgba(0, 0, 0, .08);
-    box-shadow: none;
-}
-
-
-/*** Job Listing ***/
-.nav-pills .nav-item .active {
-    border-bottom: 2px solid var(--primary);
-}
-
-.job-item {
-    border: 1px solid transparent;
-    border-radius: 2px;
-    box-shadow: 0 0 45px rgba(0, 0, 0, .08);
-    transition: .5s;
-}
-
-.job-item:hover {
-    border-color: rgba(0, 0, 0, .08);
-    box-shadow: none;
-}
-
-
-/*** Testimonial ***/
-.testimonial-carousel .owl-item .testimonial-item,
-.testimonial-carousel .owl-item.center .testimonial-item * {
-    transition: .5s;
-}
-
-.testimonial-carousel .owl-item.center .testimonial-item {
-    background: var(--primary) !important;
-}
-
-.testimonial-carousel .owl-item.center .testimonial-item * {
-    color: #FFFFFF !important;
-}
-
-.testimonial-carousel .owl-dots {
-    margin-top: 24px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-}
-
-.testimonial-carousel .owl-dot {
-    position: relative;
-    display: inline-block;
-    margin: 0 5px;
-    width: 15px;
-    height: 15px;
-    border: 5px solid var(--primary);
-    border-radius: 2px;
-    transition: .5s;
-}
-
-.testimonial-carousel .owl-dot.active {
-    background: var(--dark);
-    border-color: var(--primary);
-}
-
-
-/*** Footer ***/
-.footer .btn.btn-social {
-    margin-right: 5px;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--light);
-    border: 1px solid rgba(255,255,255,0.5);
-    border-radius: 2px;
-    transition: .3s;
-}
-
-.footer .btn.btn-social:hover {
-    color: var(--primary);
-    border-color: var(--light);
-}
-
-.footer .btn.btn-link {
-    display: block;
-    margin-bottom: 5px;
-    padding: 0;
-    text-align: left;
-    font-size: 15px;
-    font-weight: normal;
-    text-transform: capitalize;
-    transition: .3s;
-}
-
-.footer .btn.btn-link::before {
-    position: relative;
-    content: "\f105";
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    margin-right: 10px;
-}
-
-.footer .btn.btn-link:hover {
-    letter-spacing: 1px;
-    box-shadow: none;
-}
-
-.footer .form-control {
-    border-color: rgba(255,255,255,0.5);
-}
-
-.footer .copyright {
-    padding: 25px 0;
-    font-size: 15px;
-    border-top: 1px solid rgba(256, 256, 256, .1);
-}
-
-.footer .copyright a {
-    color: var(--light);
-}
-
-.footer .footer-menu a {
-    margin-right: 15px;
-    padding-right: 15px;
-    border-right: 1px solid rgba(255, 255, 255, .1);
-}
-
-.footer .footer-menu a:last-child {
-    margin-right: 0;
-    padding-right: 0;
-    border-right: none;
-}
-
-/*company profile*/
-.company-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-    background-color: #f0f0f0;
-    border: 10px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
-
-/* Style the company details section */
-.company-details {
-    text-align: left;
-    padding: 20px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
-
-/* Style the header section */
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 20px;
-}
-
-.header img {
-    max-width: 500px;
-    height: auto;
-}
-
-/* Style the "Post Job" button */
-button[type="submit"] {
-    background-color: #00B074;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-style: oblique;
-    cursor: pointer;
-}
-
-button[type="submit"]:hover {
-    background-color: #00882d;
-}
-
-/* Style the description section */
-.description {
-    margin: 10px 0;
-}
-
-/* Style the details-row and columns for the 3-column, 2-row layout */
-.details-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: space-between;
-}
-
-.details-column {
-    flex: 1;
-    min-width: 30%;
-}
-
-
-/*For post job */
-.my-custom-form {
-    max-width: 1000px;
-    margin: 40px auto;
-    padding: 20px;
-    border: 2px solid;
-    border-radius: 10px;
-    background-color: #f0f0f0;
-}
-
-.my-custom-form label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 8px;
-    font-size: 16px;
-    color: #333;
-}
-
-.my-custom-form input[type="text"],
-.my-custom-form textarea {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    color: #555;
-}
-
-.my-custom-form select {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 20px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    color: #555;
-}
-
-.my-custom-form input[type="submit"] {
-    background-color: #00B074;
-    color: #fff;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.my-custom-form input[type="submit"]:hover {
-    background-color: #00882d;
-}
-
-
-/*Student Page */
-
-* {
-    outline: none;
-}
-
-.form-heading {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 36px;
-    font-weight: bold;
-    margin: 5px;
-}
-
-.reg-form {
-    background: #fff;
-    box-sizing: border-box;
-    box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.4);
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    margin: 15px auto;
-    padding: 15px;
-    width: 900px;
-}
-
-.helper-text {
-    font-size: 12px;
-    margin-bottom: 10px;
-    text-align: right;
-}
-
-.form-columns {
-    display: flex;
-    justify-content: space-between;
-}
-
-.field-column {
-    flex: 1;
-    padding-right: 15px;
-    /* Add some spacing between columns */
-}
-
-.field-row {
-    position: relative;
-    width: 100%;
-    margin-bottom: 15px;
-}
-
-.form-label {
-    display: inline-block;
-    font-size: 16px;
-    margin: 0 5px 5px 0;
-    text-align: right;
-    width: 100px;
-}
-
-.field {
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    display: inline-block;
-    font-size: 16px;
-    padding: 10px;
-    margin-bottom: 15px;
-    width: 240px;
-}
-
-.field.field-short {
-    width: 70px;
-}
-
-.message {
-    display: inline-block;
-}
-
-.form-button {
-    background: #00B074;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    display: inline-block;
-    padding: 10px;
-    font-size: 16px;
-    width: 200px;
-}
-
-.button-container {
-    text-align: center;
-    /* Center the button horizontally */
-}
-
-:required+.message::before {
-    content: "* ";
-}
-
-.text-field:focus:required:valid {
-    outline: green solid 2px;
-}
-
-.text-field:focus:required:invalid {
-    outline: orange solid 2px;
-}
-
-.date-field {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-.date-field:focus:in-range {
-    outline: green solid 2px;
-}
-
-.date-field:focus:out-of-range {
-    outline: orange solid 2px;
-}
-
-.website-field:focus:valid {
-    outline: green solid 2px;
-}
-
-.website-field:focus:invalid {
-    outline: orange solid 2px;
-}
-
-.first-name-field:focus:invalid+.message::after {
-    color: orange;
-    content: "Required your first name";
-}
-
-.last-name-field:focus:invalid+.message::after {
-    color: orange;
-    content: "Required your last name";
-}
-
-.dob-field:focus:out-of-range+.message::after {
-    color: orange;
-    content: "Date is out of range";
-}
-
-.tel-field:focus:invalid+.message::after {
-    color: orange;
-    content: "Required telephone number";
-}
-
-.email-field:focus:invalid+.message::after {
-    color: orange;
-    content: "Required email address";
-}
-
-.hs-field:focus:invalid+.message::after {
-    color: orange;
-    content: "Required high school name";
-}
-
-.address-field:focus:invalid+.message::after {
-    color: orange;
-    content: "Required permanent address";
-}
-
-.website-field:focus:invalid+.message::after {
-    color: orange;
-    content: "Required valid URL";
-}
-
-@import url('https://fonts.googleapis.com/css?family=Raleway:400,500,600,700,800,900');
-
-
-
-html {
-    box-sizing: border-box;
-}
-
-*,
-*:before,
-*:after {
-    box-sizing: inherit;
-}
-
-article,
-header,
-section,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-main,
-nav,
-section,
-summary {
-    display: block;
-}
-
-body {
-    background: #e7eefc none repeat scroll 0 0;
-    color: #222;
-    font-size: 100%;
-    line-height: 24px;
-    margin: 0;
-    padding: 0;
-    font-family: "Raleway", sans-serif;
-}
-
-.bg-custom {
-    background-color: #e7eefc;
-}
-
-a {
-    font-family: "Raleway", sans-serif;
-    text-decoration: none;
-    outline: none;
-}
-
-a:hover,
-a:focus {
-    color: #373e18;
-}
-
-section {
-    float: left;
-    width: 100%;
-    padding-bottom: 3em;
-}
-
-h2 {
-    color: #1a0e0e;
-    font-size: 26px;
-    font-weight: 700;
-    margin: 0;
-    line-height: normal;
-    text-transform: uppercase;
-}
-
-h2 span {
-    display: block;
-    padding: 0;
-    font-size: 18px;
-    opacity: 0.7;
-    margin-top: 5px;
-    text-transform: uppercase;
-}
-
-#float-right {
-    float: right;
-}
-
-/* Script Top*/
-
-.ScriptTop {
-    background: #fff none repeat scroll 0 0;
-    float: left;
-    font-size: 0.69em;
-    font-weight: 600;
-    line-height: 2.2;
-    padding: 12px 0;
-    text-transform: uppercase;
-    width: 100%;
-}
-
-/* To Navigation Style 1*/
-.ScriptTop ul {
-    margin: 24px 0;
-    padding: 0;
-    text-align: left;
-}
-
-.ScriptTop li {
-    list-style: none;
-    display: inline-block;
-}
-
-.ScriptTop li a {
-    background: #6a4aed none repeat scroll 0 0;
-    color: #fff;
-    display: inline-block;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 5px 18px;
-    text-decoration: none;
-    text-transform: capitalize;
-}
-
-.ScriptTop li a:hover {
-    background: #000;
-    color: #fff;
-}
-
-
-/*Script Header*/
-
-.ScriptHeader {
-    float: left;
-    width: 100%;
-    padding: 2em 0;
-}
-
-.rt-heading {
-    margin: 0 auto;
-    text-align: center;
-}
-
-.Scriptcontent {
-    line-height: 28px;
-}
-
-.ScriptHeader h1 {
-    font-family: "brandon-grotesque", "Brandon Grotesque", "Source Sans Pro", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    color: #6a4aed;
-    font-size: 26px;
-    font-weight: 700;
-    margin: 0;
-    line-height: normal;
-
-}
-
-.ScriptHeader h2 {
-    color: #312c8f;
-    font-size: 20px;
-    font-weight: 400;
-    margin: 5px 0 0;
-    line-height: normal;
-
-}
-
-.ScriptHeader h1 span {
-    display: block;
-    padding: 0;
-    font-size: 22px;
-    opacity: 0.7;
-    margin-top: 5px;
-
-}
-
-.ScriptHeader span {
-    display: block;
-    padding: 0;
-    font-size: 22px;
-    opacity: 0.7;
-    margin-top: 5px;
-}
-
-
-/*Responsive Grids*/
-
-.rt-container {
-    margin: 0 auto;
-    padding-left: 12px;
-    padding-right: 12px;
-}
-
-.rt-row:before,
-.rt-row:after {
-    display: table;
-    line-height: 0;
-    content: "";
-}
-
-.rt-row:after {
-    clear: both;
-}
-
-[class^="col-rt-"] {
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -o-box-sizing: border-box;
-    -ms-box-sizing: border-box;
-    padding: 0 15px;
-    min-height: 1px;
-    position: relative;
-}
-
-
-@media (min-width: 768px) {
-    .rt-container {
-        width: 750px;
-    }
-
-    [class^="col-rt-"] {
-        float: left;
-        width: 49.9999999999%;
-    }
-
-    .col-rt-6,
-    .col-rt-12 {
-        width: 100%;
-    }
-
-}
-
-@media (min-width: 1200px) {
-    .rt-container {
-        width: 1170px;
-    }
-
-    .col-rt-1 {
-        width: 16.6%;
-    }
-
-    .col-rt-2 {
-        width: 30.33%;
-    }
-
-    .col-rt-3 {
-        width: 50%;
-    }
-
-    .col-rt-4 {
-        width: 67.664%;
-    }
-
-    .col-rt-5 {
-        width: 83.33%;
-    }
-
-
-}
-
-@media only screen and (min-width:240px) and (max-width: 768px) {
-
-    .ScriptTop h1,
-    .ScriptTop ul {
-        text-align: center;
-    }
-
-    .ScriptTop h1 {
-        margin-top: 0;
-        margin-bottom: 15px;
-    }
-
-    .ScriptTop ul {
-        margin-top: 12px;
-    }
-
-    .ScriptHeader h1,
-    .ScriptHeader h2,
-    .scriptnav ul {
-        text-align: center;
-    }
-
-    .scriptnav ul {
-        margin-top: 12px;
-    }
-
-    #float-right {
-        float: none;
-    }
-
-}
-
-/***Add Student CSS ***/
-.addStudent-box {
-    margin-top: 350px;
-    margin-left: 50%;
-    width: 400px;
-    padding: 40px;
-    transform: translate(-50%, -50%);
-    background: rgba(0,0,0,.5);
-    box-sizing: border-box;
-    box-shadow: 0 15px 25px rgba(0,0,0,.6);
-    border-radius: 10px;
-}
-
-  
-  .addStudent-box h2 {
-    margin: 0 0 30px;
-    padding: 0;
-    color: #fff;
-    text-align: center;
-  }
-  
-  .addStudent-box .studentInfo-box {
-    position: relative;
-  }
-  
-  .addStudent-box .studentInfo-box input {
-    width: 100%;
-    padding: 10px 0;
-    font-size: 16px;
-    color: #fff;
-    margin-bottom: 30px;
-    border: none;
-    border-bottom: 1px solid #fff;
-    outline: none;
-    background: transparent;
-  }
-  .addStudent-box .studentInfo-box label {
-    position: absolute;
-    top:0;
-    left: 0;
-    padding: 10px 0;
-    font-size: 16px;
-    color: #fff;
-    pointer-events: none;
-    transition: .5s;
-  }
-  
-  .addStudent-box .studentInfo-box input:focus ~ label,
-  .addStudent-box .studentInfo-box input:valid ~ label {
-    top: -20px;
-    left: 0;
-    color: #03e9f4;
-    font-size: 12px;
-  }
-  
-  .addStudent-box form a {
-    position: relative;
-    display: inline-block;
-    padding: 10px 20px;
-    color: #03e9f4;
-    font-size: 16px;
-    text-decoration: none;
-    text-transform: uppercase;
-    overflow: hidden;
-    transition: .5s;
-    margin-top: 40px;
-    letter-spacing: 4px
-  }
-  
-  .addStudent-box a:hover {
-    background: #03e9f4;
-    color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 5px #03e9f4,
-                0 0 25px #03e9f4,
-                0 0 50px #03e9f4,
-                0 0 100px #03e9f4;
-  }
-  
-  .addStudent-box a span {
-    position: absolute;
-    display: block;
-  }
-  
-  .addStudent-box a span:nth-child(1) {
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #03e9f4);
-    animation: btn-anim1 1s linear infinite;
-  }
-  
-  @keyframes btn-anim1 {
-    0% {
-      left: -100%;
-    }
-    50%,100% {
-      left: 100%;
-    }
-  }
-  
-  .addStudent-box a span:nth-child(2) {
-    top: -100%;
-    right: 0;
-    width: 2px;
-    height: 100%;
-    background: linear-gradient(180deg, transparent, #03e9f4);
-    animation: btn-anim2 1s linear infinite;
-    animation-delay: .25s
-  }
-  
-  @keyframes btn-anim2 {
-    0% {
-      top: -100%;
-    }
-    50%,100% {
-      top: 100%;
-    }
-  }
-  
-  .addStudent-box a span:nth-child(3) {
-    bottom: 0;
-    right: -100%;
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(270deg, transparent, #03e9f4);
-    animation: btn-anim3 1s linear infinite;
-    animation-delay: .5s
-  }
-  
-  @keyframes btn-anim3 {
-    0% {
-      right: -100%;
-    }
-    50%,100% {
-      right: 100%;
-    }
-  }
-  
-  .addStudent-box a span:nth-child(4) {
-    bottom: -100%;
-    left: 0;
-    width: 2px;
-    height: 100%;
-    background: linear-gradient(360deg, transparent, #03e9f4);
-    animation: btn-anim4 1s linear infinite;
-    animation-delay: .75s
-  }
-  
-  @keyframes btn-anim4 {
-    0% {
-      bottom: -100%;
-    }
-    50%,100% {
-      bottom: 100%;
-    }
-  }
-
-  /***Student List***/
-  .studentSearch {
-    text-align: right; /* Align the content to the right */
-    float: right; /* Float the container to the right */
-    margin-right: 20px; /* Add some right margin for spacing */
-
-
-  /***View Report***/
-
-.rt-container {
-	margin: 0 auto;
-	padding-left:12px;
-	padding-right:12px;
-}
-.rt-row:before, .rt-row:after {
-  display: table;
-  line-height: 0;
-  content: "";
-}
-
-.rt-row:after {
-  clear: both;
-}
-[class^="col-rt-"] {
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -o-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  padding: 0 15px;
-  min-height: 1px;
-  position: relative;
-}
-
-
-@media (min-width: 768px) {
-  .rt-container {
-    width: 750px;
-  }
-  [class^="col-rt-"] {
-    float: left;
-    width: 49.9999999999%;
-  }
-  .col-rt-6, .col-rt-12 {
-    width: 100%;
-  }
-  
-}
-
-@media (min-width: 1200px) {
-	.rt-container {
-		width: 1170px;
-	}
-	.col-rt-1 {
-		width:16.6%;
-	}
-	.col-rt-2 {
-		width:30.33%;
-	}
-	.col-rt-3 {
-		width:50%;
-	}
-	.col-rt-4 {
-		width: 67.664%;
-	}
-	.col-rt-5 {
-		width: 83.33%;
-	}
-	
-
-}
-
-@media only screen and (min-width:240px) and (max-width: 768px){
-	 .ScriptTop h1, .ScriptTop ul {
-		text-align: center;
-	}
-	.ScriptTop h1{
-		margin-top:0;
-		margin-bottom:15px;
-	}
-	.ScriptTop ul{
-		 margin-top:12px;		
-	}
-	
-	.ScriptHeader h1,
-	.ScriptHeader h2, 
-	.scriptnav ul{
-		text-align:center;	
-	}
-	.scriptnav ul{
-		 margin-top:12px;		
-	}
-	#float-right{
-		float:none;	
-	}
-	
-}
-
-
-.round-button {
-  background-color: #30c06c; /* Change the background color to your preferred color */
-  color: #fff; /* Text color */
-  border: none;
-  border-radius: 50%; /* Makes the button round */
-  width: 150px;
-  height: 75px;
-  font-size: 30px; /* Adjust the font size as needed */
-  cursor: pointer;
-  margin-left: 20px; /* Add left margin to separate it from the search button */
-}
-
-/* Hover effect for the round button */
-.round-button:hover {
-  background-color: #008170; /* Change the background color on hover */
-}
-}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>JobEntry - Job Portal Website Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="/assets/img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Inter:wght@700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/animate/animate.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container-xxl bg-white p-0">
+        <!-- Spinner Start -->
+        <div id="spinner"
+            class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+
+        <!-- Navbar Start -->
+        <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
+            <a href="/" class="navbar-brand d-flex align-items-center text-center py-0 px-4 px-lg-5">
+                <h1 class="m-0 text-primary">JobEntry</h1>
+            </a>
+            <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto p-4 p-lg-0">
+                    <a href="/" class="nav-item nav-link">Home</a>
+                    <a href="/about" class="nav-item nav-link">About</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Jobs</a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                            <a href="/job-list" class="dropdown-item">Job List</a>
+                            <a href="/job-detail" class="dropdown-item">Job Detail</a>
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Pages</a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                            <a href="/category" class="dropdown-item">Job Category</a>
+                            <a href="/testimonial" class="dropdown-item">Testimonial</a>
+                            <a href="/404" class="dropdown-item active">404</a>
+                        </div>
+                    </div>
+                    <a href="/contact" class="nav-item nav-link">Contact</a>
+                </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Login</a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                            <a href="/student-login" class="dropdown-item">Login as Student</a>
+                            <a href="/lecturer-login" class="dropdown-item">Login as Lecturer</a>
+                            <a href="/company-login" class="dropdown-item">Login as Company</a>
+                            <a href="/admin-login" class="dropdown-item">Login as Admin</a>
+                        </div>
+                    </div>
+                <a href="/post-job" class="btn btn-primary rounded-0 py-4 px-lg-5 d-none d-lg-block">Post A Job<i class="fa fa-arrow-right ms-3"></i></a>
+            </div>
+        </nav>
+        <!-- Navbar End -->
+
+        <!-- Header End -->
+        <div class="container-xxl py-5 bg-dark page-header mb-5">
+            <div class="container my-5 pt-5 pb-4">
+                <h1 class="display-3 text-white mb-3 animated slideInDown">Add a Student</h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb text-uppercase">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                        <li class="breadcrumb-item text-white active" aria-current="page">Add a Student</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <!-- Header End -->
+
+        <!-- Category Start -->
+        <div class="addStudent-box">
+            <h2>Add Student</h2>
+            <form method = "POST" enctype="multipart/form-data" action="/assignSupervisorFunc" method="POST">
+                <div class="studentInfo-box">
+                    <input type="text" name="StudentID" id="StudentID" required>
+                    <label>Student ID</label>
+                </div>
+                <div class="studentInfo-box">
+                    <input type="text" name="StudentName" id="StudentName" required>
+                    <label>Student Name</label>
+                </div>
+                <button>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    Submit
+                </button>
+            </form>
+        </div>
+
+        <div class="formGroup">
+            <button type="submit" class="btn2"><span>SUBMIT</span></button>
+        </div>
+        <!-- Category End -->
+
+
+        <!-- Footer Start -->
+        <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+            <div class="container py-5">
+                <div class="row g-5">
+                    <div class="col-lg-3 col-md-6">
+                        <h5 class="text-white mb-4">Company</h5>
+                        <a class="btn btn-link text-white-50" href="">About Us</a>
+                        <a class="btn btn-link text-white-50" href="">Contact Us</a>
+                        <a class="btn btn-link text-white-50" href="">Our Services</a>
+                        <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
+                        <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h5 class="text-white mb-4">Quick Links</h5>
+                        <a class="btn btn-link text-white-50" href="">About Us</a>
+                        <a class="btn btn-link text-white-50" href="">Contact Us</a>
+                        <a class="btn btn-link text-white-50" href="">Our Services</a>
+                        <a class="btn btn-link text-white-50" href="">Privacy Policy</a>
+                        <a class="btn btn-link text-white-50" href="">Terms & Condition</a>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h5 class="text-white mb-4">Contact</h5>
+                        <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Rewa, Madhya Pradesh, IND</p>
+                        <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+91991919191</p>
+                        <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@ajaykumar.com</p>
+                        <div class="d-flex pt-2">
+                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+                            <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <h5 class="text-white mb-4">Newsletter</h5>
+                        <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+                        <div class="position-relative mx-auto" style="max-width: 400px;">
+                            <input class="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text"
+                                placeholder="Your email">
+                            <button type="button"
+                                class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="copyright">
+                    <div class="row">
+                        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                            &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
+
+                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                            Designed By <a class="border-bottom" href="">Code By Ajay Kumar</a>
+                        </div>
+                        <div class="col-md-6 text-center text-md-end">
+                            <div class="footer-menu">
+                                <a href="">Home</a>
+                                <a href="">Cookies</a>
+                                <a href="">Help</a>
+                                <a href="">FQAs</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/lib/wow/wow.min.js"></script>
+    <script src="/assets/lib/easing/easing.min.js"></script>
+    <script src="/assets/lib/waypoints/waypoints.min.js"></script>
+    <script src="/assets/lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="/assets/js/main.js"></script>
+</body>
+
+</html>
