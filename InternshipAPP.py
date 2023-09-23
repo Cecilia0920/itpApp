@@ -283,10 +283,10 @@ def searchStudent():
         app_dict = {
             'StudName': row[0],
             'StudID': row[1],
-            'TarumtEmail': row[8],
-            'Programme': row[5],
-            'CompanyName': row[10],
-            'JobAllowance': row[11],
+            'TarumtEmail': row[7],
+            'Programme': row[4],
+            'CompanyName': row[21],
+            'JobAllowance': row[19],
             # Add other fields as needed
         }
         students.append(app_dict)
@@ -327,7 +327,7 @@ if __name__ == '__main__':
 
 
 #Show Student Details Function
-@app.route("/lecturer/studentDetail")
+@app.route("/studentDetail")
 def lecStudentDetail():
     return render_template('viewReport.html')
 #     # Retrieve the studID query parameter from the URL
