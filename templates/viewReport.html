@@ -102,79 +102,75 @@
 
 
         <!--View Report  Start -->
+        <!-- ======= Inner Page ======= -->
+      <section class="inner-page">
         <div class="student-profile py-4">
-            <div class="container">
-              {% for student in student %}
-              <div class="row">
-                <div class="col-lg-4">
-                  <div class="card shadow-sm">
-                    <div class="card-header bg-transparent text-center">
-                      <img class="profile_img" src="{{ student.StudProfile }}" alt="student dp" style="width: 120px; height: 120px";>
-                      <h3>{{ student.StudName }}</h3>
-                    </div>
-                    <div class="card-body">
-                      <p class="mb-0"><strong class="pr-1">Student ID:</strong>{{ student.StudID }}</p>
-                      <p class="mb-0"><strong class="pr-1">Student Name:</strong>{{ student.StudName }}</p>
-                      <p class="mb-0"><strong class="pr-1">Gender    :</strong>{{ student.Gender }}</p>
-                      <p class="mb-0"><strong class="pr-1">Programme :</strong>{{ student.Programme }}</p>
-                      <p class="mb-0"><strong class="pr-1">Email     :</strong>{{ student.TarumtEmail }}</p>
-                      <p class="mb-0"><strong class="pr-1">Phone No  :</strong>{{ student.PhoneNum }}</p>
-                      <p class="mb-0"><strong class="pr-1">Intern Batch:</strong>{{ student.Batch }}</p>
-                    </div>
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-4">
+                <div class="card shadow-sm">
+                  <div class="card-header bg-transparent text-center">
+                    <img class="profile_img" src="{{ student.StudProfile }}" alt="Student Profile" style="width: 120px; height: 120px";>
+                    <h3>{{ student.StudName }}</h3>
                   </div>
-                </div>
-                <div class="col-lg-8">
-                  <div class="card shadow-sm">
-                    <div class="card-header bg-transparent border-0">
-                      <h3 class="mb-0"><i class="far fa-clone pr-1"></i>Student Internship Information</h3>
-                    </div>
-                    <div class="card-body pt-0">
-                      <table class="table table-bordered">
-                        <tr>
-                          <th width="30%">Company Name</th>
-                          <td width="2%">:</td>
-                          <td>{{ student.CompanyName }}</td>
-                        </tr>
-                        <tr>
-                          <th width="30%">Position</th>
-                          <td width="2%">:</td>
-                          <td>{{ student.JobPosition }}</td>
-                        </tr>
-                        <tr>
-                          <th width="30%">Allowance</th>
-                          <td width="2%">:</td>
-                          <td>{{ student.JobAllowance }}</td>
-                        </tr>
-                      </table>
-                    </div>
-                  </div>
-                    <div style="height: 26px"></div>
-                  <div class="card shadow-sm">
-                    <div class="card-header bg-transparent border-0">
-                      <h3 class="mb-0"><i class="fa fa-file pr-1"></i>View Report</h3>
-                    </div>
-                    <div class="card-body pt-0">
-                        <p>Weekly Report  : <a href="{{ student.weeklyReport_url }}" download><button>Download</button></a></p>
-                        <p>Monthly Report : <a href="{{ student.monthlyReport_url }}" download><button>Download</button></a></p>
-                        <p>Final Report   : <a href="{{ student.finalReport_url }}" download><button>Download</button></a></p>
-                        <form action="/updateScoreFunc">
-                            <label for="mark">Score:</label>
-                            <input type="text" id="mark" name="ScoreInput" required>
-                            <button type="submit">Submit</button>
-                        </form>
-                    </div>
+                  <div class="card-body">
+                    <p class="mb-0"><strong class="pr-1">Student ID:</strong>{{ student.StudID }}</p>
+                    <p class="mb-0"><strong class="pr-1">Student Name:</strong>{{ student.StudName }}</p>
+                    <p class="mb-0"><strong class="pr-1">Gender    :</strong>{{ student.Gender }}</p>
+                    <p class="mb-0"><strong class="pr-1">Programme :</strong>{{ student.Programme }}</p>
+                    <p class="mb-0"><strong class="pr-1">Email     :</strong>{{ student.TarumtEmail }}</p>
+                    <p class="mb-0"><strong class="pr-1">Phone No  :</strong>{{ student.PhoneNum }}</p>
+                    <p class="mb-0"><strong class="pr-1">Intern Batch:</strong>{{ student.Batch }}</p>
                   </div>
                 </div>
               </div>
-              {% endfor %}
+            <div class="col-lg-8">
+              <div class="card shadow-sm">
+                <div class="card-header bg-transparent border-0">
+                  <h3 class="mb-0"><i class="far fa-clone pr-1"></i>Student Internship Information</h3>
+                </div>
+                <div class="card-body pt-0">
+                  <table class="table table-bordered">
+                    <tr>
+                      <th width="30%">Company Name</th>
+                      <td width="2%">:</td>
+                      <td>{{ student.CompanyName }}</td>
+                    </tr>
+                    <tr>
+                      <th width="30%">Position</th>
+                      <td width="2%">:</td>
+                      <td>{{ student.JobPosition }}</td>
+                    </tr>
+                    <tr>
+                      <th width="30%">Allowance</th>
+                      <td width="2%">:</td>
+                      <td>{{ student.JobAllowance }}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div style="height: 26px"></div>
+                <div class="card shadow-sm">
+                  <div class="card-header bg-transparent border-0">
+                    <h3 class="mb-0"><i class="fa fa-file pr-1"></i>View Report</h3>
+                  </div>
+                  <div class="card-body pt-0">
+                      <p>Weekly Report  : <a href="{{ student.weeklyReport_url }}" download><button>Download</button></a></p>
+                      <p>Monthly Report : <a href="{{ student.monthlyReport_url }}" download><button>Download</button></a></p>
+                      <p>Final Report   : <a href="{{ student.finalReport_url }}" download><button>Download</button></a></p>
+                      <form method="POST" action="/updateScoreFunc">
+                        <label for="mark">Score:</label>
+                        <input type="text" id="mark" name="ScoreInput" required>
+                        <button type="submit">Submit</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <!-- partial -->
-                     
-                      </div>
-                  </div>
-              </div>
-          </section>
+        </div>
+      </section>
                
         <!-- View Report End -->
 

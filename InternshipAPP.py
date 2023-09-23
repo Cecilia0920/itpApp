@@ -314,17 +314,50 @@ def assignSupervisor():
     return render_template('addStudent.html')
 
 # Update Student Score Function
-@app.route("/updateScoreFunc")
+@app.route("/updateScoreFunc", methods=['POST'])
 def updateScore():
     student_score = request.form['ScoreInput']
-    studentID=session.get('StudID')
-    update_sql = "UPDATE Student SET InternScore=%s WHERE StudID=%s AND StudName=%s"
+    studentID = session.get('StudID')
+    email = session.get('StudEmail')
+    name = session.get('StudName')
+    update_sql = "UPDATE Student SET InternScore=%s WHERE StudID=%s AND StudName=%s AND TarumtEmail=%s"
     cursor = db_conn.cursor()
-    cursor.execute(update_sql, (student_score, studentID))
-    db_conn.commit()
+    cursor.execute(update_sql, (student_score, studentID, name, email))
+    db_conn.commit()  # Commit changes from the first query
 
+    # Fetch the updated student data after the update
+    cursor2 = db_conn.cursor()
+    retreive_sql = "SELECT * FROM Student WHERE StudID = %s AND TarumtEmail = %s"    
+    cursor2.execute(retreive_sql, (studentID, email,))
+    student_data = cursor2.fetchone()
+
+    db_conn.commit()  # Commit changes from the second query
+
+    # Process or use student_data here if needed
     cursor.close()
-    return render_template('viewReport.html')
+    cursor2.close()
+    if student_data:
+        #Convert the user record to a dictionary
+        student = {
+            'StudID': student_data[1],
+            'StudName':student_data[0],
+            'Gender': student_data[3],
+            'Programme': student_data[4],
+            'TarumtEmail': student_data[7],
+            'student_profile':student_data[12],
+            'weeklyReport_url':student_data[15],
+            'monthlyReport_url':student_data[16],
+            'finalReport_url':student_data[17],
+            'InternBatch': student_data[9],
+            'CompanyName': student_data[19],
+            'JobPosition': student_data[20],
+            'JobAllowance': student_data[21],
+            }
+        session['StudID']=student['StudID']
+        session['StudEmail']=student['TarumtEmail']
+        session['StudName']=student['StudName']
+        
+    return render_template('viewReport.html',student=student)
 
 #Show Student Details Function
 @app.route("/navStudentDetailFunc", methods=['GET', 'POST'])
@@ -357,6 +390,9 @@ def showStudReport():
             'JobPosition': student_data[20],
             'JobAllowance': student_data[21],
         }
+        session['StudID']=student['StudID']
+        session['StudEmail']=student['TarumtEmail']
+        session['StudName']=student['StudName']
     
     return render_template('viewReport.html',student=student)
 
