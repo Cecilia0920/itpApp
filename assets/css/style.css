@@ -426,7 +426,7 @@
 }
 
 .header img {
-    max-width: 500px;
+    width:auto;
     height: auto;
 }
 
@@ -518,8 +518,7 @@ button[type="submit"]:hover {
 }
 
 
-/*Student Page */
-
+/*** Student Page ***/
 * {
     outline: none;
 }
@@ -538,7 +537,7 @@ button[type="submit"]:hover {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     margin: 15px auto;
     padding: 15px;
-    width: 900px;
+    width: 1000px;
 }
 
 .helper-text {
@@ -638,39 +637,69 @@ button[type="submit"]:hover {
     outline: orange solid 2px;
 }
 
-.first-name-field:focus:invalid+.message::after {
+.student-name-field:focus:invalid+.message::after {
     color: orange;
-    content: "Required your first name";
+    content: "Required Student Name";
 }
 
-.last-name-field:focus:invalid+.message::after {
+.student-id-field:focus:invalid+.message::after {
     color: orange;
-    content: "Required your last name";
+    content: "Required Student ID";
 }
 
-.dob-field:focus:out-of-range+.message::after {
+.nric-field:focus:invalid+.message::after {
     color: orange;
-    content: "Date is out of range";
+    content: "Required NRIC Number";
 }
 
-.tel-field:focus:invalid+.message::after {
+.gender-field:focus:invalid+.message::after {
     color: orange;
-    content: "Required telephone number";
+    content: "Required Gender";
 }
 
-.email-field:focus:invalid+.message::after {
+.prog-study-field:focus:invalid+.message::after {
     color: orange;
-    content: "Required email address";
+    content: "Required Programme of Study";
 }
 
-.hs-field:focus:invalid+.message::after {
+.faculty-field:focus:invalid+.message::after {
     color: orange;
-    content: "Required high school name";
+    content: "Required Faculty";
 }
 
-.address-field:focus:invalid+.message::after {
+.cgpa-field:focus:invalid+.message::after {
     color: orange;
-    content: "Required permanent address";
+    content: "Required CGPA";
+}
+
+.tarumt-email-field:focus:invalid+.message::after {
+    color: orange;
+    content: "Required TARUMT Email";
+}
+
+.mobile-num-field:focus:invalid+.message::after {
+    color: orange;
+    content: "Required Mobile Number";
+}
+
+.intern-batch-field:focus:invalid+.message::after {
+    color: orange;
+    content: "Required Intern Batch";
+}
+
+.home-address-field:focus:invalid+.message::after {
+    color: orange;
+    content: "Required Home Address";
+}
+
+.personal-email-field:focus:invalid+.message::after {
+    color: orange;
+    content: "Required Personal Email";
+}
+
+.password-field:focus:invalid+.message::after {
+    color: orange;
+    content: "Required Password";
 }
 
 .website-field:focus:invalid+.message::after {
@@ -679,8 +708,6 @@ button[type="submit"]:hover {
 }
 
 @import url('https://fonts.googleapis.com/css?family=Raleway:400,500,600,700,800,900');
-
-
 
 html {
     box-sizing: border-box;
@@ -762,8 +789,6 @@ h2 span {
     float: right;
 }
 
-/* Script Top*/
-
 .ScriptTop {
     background: #fff none repeat scroll 0 0;
     float: left;
@@ -803,9 +828,6 @@ h2 span {
     color: #fff;
 }
 
-
-/*Script Header*/
-
 .ScriptHeader {
     float: left;
     width: 100%;
@@ -825,12 +847,11 @@ h2 span {
     font-family: "brandon-grotesque", "Brandon Grotesque", "Source Sans Pro", "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    color: #6a4aed;
     font-size: 26px;
     font-weight: 700;
     margin: 0;
     line-height: normal;
-
+    color: #00B074;
 }
 
 .ScriptHeader h2 {
@@ -858,9 +879,6 @@ h2 span {
     opacity: 0.7;
     margin-top: 5px;
 }
-
-
-/*Responsive Grids*/
 
 .rt-container {
     margin: 0 auto;
@@ -905,7 +923,6 @@ h2 span {
     .col-rt-12 {
         width: 100%;
     }
-
 }
 
 @media (min-width: 1200px) {
@@ -932,12 +949,9 @@ h2 span {
     .col-rt-5 {
         width: 83.33%;
     }
-
-
 }
 
 @media only screen and (min-width:240px) and (max-width: 768px) {
-
     .ScriptTop h1,
     .ScriptTop ul {
         text-align: center;
@@ -965,7 +979,6 @@ h2 span {
     #float-right {
         float: none;
     }
-
 }
 
 /***Add Student CSS ***/
@@ -1224,7 +1237,6 @@ h2 span {
 	}
 	
 }
-
 
 .round-button {
   background-color: #30c06c; /* Change the background color to your preferred color */
