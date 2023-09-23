@@ -104,13 +104,13 @@
         <!--View Report  Start -->
         <div class="student-profile py-4">
             <div class="container">
-              {% for student in students %}
+              {% for student in student %}
               <div class="row">
                 <div class="col-lg-4">
                   <div class="card shadow-sm">
                     <div class="card-header bg-transparent text-center">
-                      <img class="profile_img" src="/assets/img/student4.jpg" alt="student dp" style="width: 120px; height: 120px";>
-                      <h3>Ishmam Ahasan Samin</h3>
+                      <img class="profile_img" src="{{ student.StudProfile }}" alt="student dp" style="width: 120px; height: 120px";>
+                      <h3>{{ student.StudName }}</h3>
                     </div>
                     <div class="card-body">
                       <p class="mb-0"><strong class="pr-1">Student ID:</strong>{{ student.StudID }}</p>
@@ -154,9 +154,9 @@
                       <h3 class="mb-0"><i class="fa fa-file pr-1"></i>View Report</h3>
                     </div>
                     <div class="card-body pt-0">
-                        <p>Weekly Report  : <a href="{{ weeklyReport_url }}" download><button>Download</button></a></p>
-                        <p>Monthly Report : <a href="{{ monthlyReport_url }}" download><button>Download</button></a></p>
-                        <p>Final Report   : <a href="{{ finalReport_url }}" download><button>Download</button></a></p>
+                        <p>Weekly Report  : <a href="{{ student.weeklyReport_url }}" download><button>Download</button></a></p>
+                        <p>Monthly Report : <a href="{{ student.monthlyReport_url }}" download><button>Download</button></a></p>
+                        <p>Final Report   : <a href="{{ student.finalReport_url }}" download><button>Download</button></a></p>
                         <form action="/updateScoreFunc">
                             <label for="mark">Score:</label>
                             <input type="text" id="mark" name="ScoreInput" required>

@@ -248,19 +248,16 @@ def studentDashboard():
             app_dict = {
                 'StudName': row[0],
                 'StudID': row[1],
+                'StudProfile': row[12],
                 'TarumtEmail': row[7],
                 'Programme': row[4],
                 'CompanyName': row[21],
                 'JobAllowance': row[19],
-                # Add other fields as needed
             }
             students.append(app_dict)
-            # Construct the profile image URL for each student
-        
-        profile_images = [f"https://{bucket}.s3.amazonaws.com/{student['StudID']}_profile.png" for student in students]
-        return render_template('studentList.html', students=students,profile_images=profile_images)
+        return render_template('studentList.html', students=students)
 
-    return render_template('studentList.html', students=None,profile_images=None)
+    return render_template('studentList.html', students=None)
 
 @app.route("/searchStudentFunc", methods=['POST'])
 def searchStudent():
@@ -286,16 +283,15 @@ def searchStudent():
             app_dict = {
                 'StudName': row[0],
                 'StudID': row[1],
+                'StudProfile': row[12],
                 'TarumtEmail': row[7],
                 'Programme': row[4],
                 'CompanyName': row[21],
                 'JobAllowance': row[19],
-                # Add other fields as needed
             }
             students.append(app_dict)
         # Construct profile image URLs for all students
-        profile_images = [f"https://{bucket}.s3.amazonaws.com/{student['StudID']}_profile.png" for student in students]
-        return render_template('studentList.html', students=students, profile=profile_images)
+        return render_template('studentList.html', students=students)
     else:
         return render_template('studentList.html', students=None)
 
@@ -334,18 +330,15 @@ def updateScore():
 @app.route("/navStudentDetailFunc", methods=['GET', 'POST'])
 def showStudReport():
     # Retrieve the studID query parameter from the URL
-    studID = request.args.get('StudID')
-    
-    # Fetch the company's information from the database based on studID
+    studID = request.args.get('studentID')
+    tarumtEmail= request.args.get('tarumtEmail')
+    # Fetch the info from the database based on studID
     cursor = db_conn.cursor()
-        
-    cursor.execute("""
-                SELECT *
-                FROM Student 
-                WHERE StudID = %s
-                """, (studID),)
+    retreive_sql = "SELECT * FROM Student WHERE StudID = %s AND TarumtEmail = %s"    
+    cursor.execute(retreive_sql, (studID,tarumtEmail,))
     student_data = cursor.fetchone()
     cursor.close()
+
     
     if student_data:
         #Convert the user record to a dictionary
@@ -355,42 +348,17 @@ def showStudReport():
             'Gender': student_data[3],
             'Programme': student_data[4],
             'TarumtEmail': student_data[7],
+            'student_profile':student_data[12],
+            'weeklyReport_url':student_data[15],
+            'monthlyReport_url':student_data[16],
+            'finalReport_url':student_data[17],
             'InternBatch': student_data[9],
             'CompanyName': student_data[19],
             'JobPosition': student_data[20],
             'JobAllowance': student_data[21],
         }
-        
-        # Get the s3 bucket location
-        s3 = boto3.resource('s3')
-        bucket_location = boto3.client('s3').get_bucket_location(Bucket=custombucket)
-        s3_location = (bucket_location['LocationConstraint'])
-        
-        if s3_location is None:
-            s3_location = 'us-east-1'
-        
-        # Initial declaration
-        
-        weeklyReport_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}weeklyReport.pdf".format(
-            custombucket,
-            s3_location,
-            student['studID'])
-        
-        monthlyReport_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}monthlyReport.pdf".format(
-            custombucket,
-            s3_location,
-            student['studID'])
-        
-        finalReport_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}monthlyReport.pdf".format(
-            custombucket,
-            s3_location,
-            student['studID'])
     
-    return render_template('viewReport.html', 
-                           student=student,
-                           weeklyReport_url=weeklyReport_url,
-                           monthlyReport_url=monthlyReport_url,
-                           finalReport_url=finalReport_url,)
+    return render_template('viewReport.html',student=student)
 
 
 if __name__ == '__main__':
