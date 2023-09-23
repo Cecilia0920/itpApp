@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session,redirect,url_for
 from pymysql import connections
 import os
 import boto3
@@ -218,12 +218,12 @@ def loginLecturer():
 
     if lecturer:
         session['LecturerEmail']=lecturerEmail
-        return render_template('studentList.html')
+        return redirect(url_for('studentDashboard'))
     else:
         show_msg = "Invalid Email Or Password!"
         return render_template('lecturer-login.html', show_msg=show_msg)
     
-#List & Search Student Function
+# List & Search Student Function
 @app.route("/studentDashboardFunc", methods=['GET', 'POST'])
 def studentDashboard():
     lecturer_email = session.get('LecturerEmail')
@@ -232,8 +232,8 @@ def studentDashboard():
     # Execute a SQL query to fetch data from the database
     cursor.execute("""
                    SELECT *
-                   FROM student
-                   WHERE LecturerEmail = %s
+                   FROM Student
+                   WHERE SupervisorEmail = %s
                    """, (lecturer_email,))
     stud_data = cursor.fetchall()  # Fetch all rows
 
@@ -253,27 +253,28 @@ def studentDashboard():
             'JobAllowance': row[11],
             # Add other fields as needed
         }
-        # Construct the profile image URL for each student
-        app_dict['profile_image'] = f"https://{bucket}.s3.amazonaws.com/{row[1]}_profile.png"
         students.append(app_dict)
+        # Construct the profile image URL for each student
+        profile_images = [f"https://{bucket}.s3.amazonaws.com/{student['StudID']}_profile.png" for student in students]
 
-    return render_template('studentList.html', students=students)
+    return render_template('studentList.html', students=students,profile_images=profile_images)
 
-@app.route("/searchStudentFunc")
+@app.route("/searchStudentFunc", methods=['POST'])
 def searchStudent():
     student_name = request.form['searchName']
     cursor = db_conn.cursor()
-    lecEmail=session.get('LecturerEmail')
+    lecEmail = session.get('LecturerEmail')
+
     # Execute a SQL query to fetch data from the database
     cursor.execute("""
                    SELECT *
-                   FROM student
+                   FROM Student
                    WHERE LecturerEmail = %s AND StudName LIKE %s
                    """, (lecEmail, '%' + student_name + '%'))
     stud_data = cursor.fetchall()  # Fetch all rows
-    
+
     cursor.close()
-    
+
     # Initialize an empty list to store dictionaries
     students = []
 
@@ -289,44 +290,46 @@ def searchStudent():
             # Add other fields as needed
         }
         students.append(app_dict)
-    profile_images = []
-    for student in students:
-        profile_url = f"https://{bucket}.s3.amazonaws.com/{student['StudID']}_profile.png"
-        profile_images.append(profile_url)
-    return render_template('/studentList', students=students,profile=profile_images)
+
+    # Construct profile image URLs for all students
+    profile_images = [f"https://{bucket}.s3.amazonaws.com/{student['StudID']}_profile.png" for student in students]
+
+    return render_template('studentList.html', students=students, profile=profile_images)
 
 # Add Student Supervised Function
-@app.route("/assignSupervisorFunc", methods=['GET', 'POST'])
+@app.route("/assignSupervisorFunc", methods=['POST'])
 def assignSupervisor():
     student_id = request.form['StudentID']
     student_name = request.form['StudentName']
-    supervisorEmail=session.get('LecturerEmail')
+    supervisorEmail = session.get('LecturerEmail')
     update_sql = "UPDATE Student SET SupervisorEmail=%s WHERE StudID=%s AND StudName=%s"
     cursor = db_conn.cursor()
 
-    cursor.execute(update_sql, (supervisorEmail,student_id,student_name))
+    cursor.execute(update_sql, (supervisorEmail, student_id, student_name))
     db_conn.commit()
-    student_data = cursor.fetchone()
+
     cursor.close()
 
-    if student_data:
-        session['LecturerEmail'] = supervisorEmail     
-        cursor = db_conn.cursor()
-        cursor.execute('SELECT * FROM Student WHERE SupervisorEmail=%s',(supervisorEmail))
-        rows = cursor.fetchall()
-        cursor.close()
-    profile = "https://" + bucket + ".s3.amazonaws.com/" + student_data[0] + "_profile.png"
+    # Retrieve updated student data after assigning supervisor
+    cursor = db_conn.cursor()
+    cursor.execute('SELECT * FROM Student WHERE SupervisorEmail=%s', (supervisorEmail,))
+    rows = cursor.fetchall()
+    cursor.close()
 
-    return render_template('studentList.html', rows=rows,lecEmail=supervisorEmail,profile=profile)
+    # Construct profile image URLs for all students
+    profile_images = [f"https://{bucket}.s3.amazonaws.com/{student['StudID']}_profile.png" for student in rows]
+
+    return render_template('studentList.html', rows=rows, lecEmail=supervisorEmail, profile=profile_images)
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
 
 
-# Show Student Details Function
-# @app.route("/lecturer/studentDetail")
-# def lecStudentDetail():
-    
+#Show Student Details Function
+@app.route("/lecturer/studentDetail")
+def lecStudentDetail():
+    return render_template('viewReport.html')
 #     # Retrieve the studID query parameter from the URL
 #     studID = request.args.get('StudID')
     

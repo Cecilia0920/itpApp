@@ -190,6 +190,12 @@
 </head>
 
 <body>
+    {% if show_msg %}
+        <script>
+            alert('{{ show_msg }}');
+        </script>
+        {% endif %}
+        
     <div class="container-xxl bg-white p-0">
         <!-- Spinner Start -->
         <div id="spinner"
@@ -349,13 +355,13 @@
                 </form>
 
                 <!--Login Form-->
-                <form class="login" id="logInForm" style="display: none;" action="/student" method="get">
+                <form class="login" id="logInForm" style="display: none;" action="/lecturer-login" method="post">
                     <div class="formGroup">
-                        <input type="email" placeholder="xxx-wm99@student.tarc.edu.my" name="email" id="logInEmail"
-                            required autocomplete="off" style="color: #393a3a;">
+                        <input type="email" placeholder="xxx@tarc.edu.my" name="lecEmail" id="logInEmail" required
+                            autocomplete="off" style="color: #393a3a;">
                     </div>
                     <div class="formGroup">
-                        <input type="password" placeholder="Password" id="studPassword" required autocomplete="off"
+                        <input type="password" placeholder="Password" id="lecPassword" name="lecPassword" required autocomplete="off"
                             style="color: #393a3a;">
 
                     </div>
