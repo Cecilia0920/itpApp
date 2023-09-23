@@ -241,23 +241,26 @@ def studentDashboard():
 
     # Initialize an empty list to store dictionaries
     students = []
-
+    
     # Iterate through the fetched data and create dictionaries
-    for row in stud_data:
-        app_dict = {
-            'StudName': row[0],
-            'StudID': row[1],
-            'TarumtEmail': row[7],
-            'Programme': row[4],
-            'CompanyName': row[21],
-            'JobAllowance': row[19],
-            # Add other fields as needed
-        }
-        students.append(app_dict)
-        # Construct the profile image URL for each student
+    if stud_data:
+        for row in stud_data:
+            app_dict = {
+                'StudName': row[0],
+                'StudID': row[1],
+                'TarumtEmail': row[7],
+                'Programme': row[4],
+                'CompanyName': row[21],
+                'JobAllowance': row[19],
+                # Add other fields as needed
+            }
+            students.append(app_dict)
+            # Construct the profile image URL for each student
+        
         profile_images = [f"https://{bucket}.s3.amazonaws.com/{student['StudID']}_profile.png" for student in students]
+        return render_template('studentList.html', students=students,profile_images=profile_images)
 
-    return render_template('studentList.html', students=students,profile_images=profile_images)
+    return render_template('studentList.html', students=None,profile_images=None)
 
 @app.route("/searchStudentFunc", methods=['POST'])
 def searchStudent():
@@ -269,35 +272,39 @@ def searchStudent():
     cursor.execute("""
                    SELECT *
                    FROM Student
-                   WHERE LecturerEmail = %s AND StudName LIKE %s
+                   WHERE SupervisorEmail = %s AND StudName LIKE %s
                    """, (lecEmail, '%' + student_name + '%'))
     stud_data = cursor.fetchall()  # Fetch all rows
-
     cursor.close()
 
     # Initialize an empty list to store dictionaries
     students = []
 
-    # Iterate through the fetched data and create dictionaries
-    for row in stud_data:
-        app_dict = {
-            'StudName': row[0],
-            'StudID': row[1],
-            'TarumtEmail': row[7],
-            'Programme': row[4],
-            'CompanyName': row[21],
-            'JobAllowance': row[19],
-            # Add other fields as needed
-        }
-        students.append(app_dict)
-
-    # Construct profile image URLs for all students
-    profile_images = [f"https://{bucket}.s3.amazonaws.com/{student['StudID']}_profile.png" for student in students]
-
-    return render_template('studentList.html', students=students, profile=profile_images)
+    if stud_data:
+        # Iterate through the fetched data and create dictionaries
+        for row in stud_data:
+            app_dict = {
+                'StudName': row[0],
+                'StudID': row[1],
+                'TarumtEmail': row[7],
+                'Programme': row[4],
+                'CompanyName': row[21],
+                'JobAllowance': row[19],
+                # Add other fields as needed
+            }
+            students.append(app_dict)
+        # Construct profile image URLs for all students
+        profile_images = [f"https://{bucket}.s3.amazonaws.com/{student['StudID']}_profile.png" for student in students]
+        return render_template('studentList.html', students=students, profile=profile_images)
+    else:
+        return render_template('studentList.html', students=None)
 
 # Add Student Supervised Function
-@app.route("/assignSupervisorFunc", methods=['POST'])
+@app.route("/navSupervisorFunc", methods=['GET', 'POST'])
+def navAssignSupervisor():
+    return render_template('addStudent.html')   
+
+@app.route("/assignSupervisorFunc", methods=['GET', 'POST'])
 def assignSupervisor():
     student_id = request.form['StudentID']
     student_name = request.form['StudentName']
@@ -307,130 +314,84 @@ def assignSupervisor():
 
     cursor.execute(update_sql, (supervisorEmail, student_id, student_name))
     db_conn.commit()
-
     cursor.close()
+    return render_template('addStudent.html')
 
-    # Retrieve updated student data after assigning supervisor
+# Update Student Score Function
+@app.route("/updateScoreFunc")
+def updateScore():
+    student_score = request.form['ScoreInput']
+    studentID=session.get('StudID')
+    update_sql = "UPDATE Student SET InternScore=%s WHERE StudID=%s AND StudName=%s"
     cursor = db_conn.cursor()
-    cursor.execute('SELECT * FROM Student WHERE SupervisorEmail=%s', (supervisorEmail,))
-    rows = cursor.fetchall()
+    cursor.execute(update_sql, (student_score, studentID))
+    db_conn.commit()
+
     cursor.close()
+    return render_template('viewReport.html')
 
-    # Construct profile image URLs for all students
-    profile_images = [f"https://{bucket}.s3.amazonaws.com/{student['StudID']}_profile.png" for student in rows]
-
-    return render_template('studentList.html', rows=rows, lecEmail=supervisorEmail, profile=profile_images)
+#Show Student Details Function
+@app.route("/navStudentDetailFunc", methods=['GET', 'POST'])
+def showStudReport():
+    # Retrieve the studID query parameter from the URL
+    studID = request.args.get('StudID')
+    
+    # Fetch the company's information from the database based on studID
+    cursor = db_conn.cursor()
+        
+    cursor.execute("""
+                SELECT *
+                FROM Student 
+                WHERE StudID = %s
+                """, (studID),)
+    student_data = cursor.fetchone()
+    cursor.close()
+    
+    if student_data:
+        #Convert the user record to a dictionary
+        student = {
+            'StudID': student_data[1],
+            'StudName':student_data[0],
+            'Gender': student_data[3],
+            'Programme': student_data[4],
+            'TarumtEmail': student_data[7],
+            'InternBatch': student_data[9],
+            'CompanyName': student_data[19],
+            'JobPosition': student_data[20],
+            'JobAllowance': student_data[21],
+        }
+        
+        # Get the s3 bucket location
+        s3 = boto3.resource('s3')
+        bucket_location = boto3.client('s3').get_bucket_location(Bucket=custombucket)
+        s3_location = (bucket_location['LocationConstraint'])
+        
+        if s3_location is None:
+            s3_location = 'us-east-1'
+        
+        # Initial declaration
+        
+        weeklyReport_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}weeklyReport.pdf".format(
+            custombucket,
+            s3_location,
+            student['studID'])
+        
+        monthlyReport_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}monthlyReport.pdf".format(
+            custombucket,
+            s3_location,
+            student['studID'])
+        
+        finalReport_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}monthlyReport.pdf".format(
+            custombucket,
+            s3_location,
+            student['studID'])
+    
+    return render_template('viewReport.html', 
+                           student=student,
+                           weeklyReport_url=weeklyReport_url,
+                           monthlyReport_url=monthlyReport_url,
+                           finalReport_url=finalReport_url,)
 
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80, debug=True)
-
-
-#Show Student Details Function
-@app.route("/studentDetail")
-def lecStudentDetail():
-    return render_template('viewReport.html')
-#     # Retrieve the studID query parameter from the URL
-#     studID = request.args.get('StudID')
-    
-#     # Fetch the company's information from the database based on studID
-#     cursor = db_conn.cursor()
-        
-#     cursor.execute("""
-#                 SELECT *
-#                 FROM student 
-#                 WHERE studID = %s
-#                 """, (studID),)
-#     student_data = cursor.fetchone()
-#     cursor.close()
-
-#     cursor2 = db_conn.cursor()
-#     cursor.execute("""
-#                 SELECT *
-#                 FROM Company_Profile 
-#                 WHERE CompanyName = %s
-#                 """, (studID),)
-#     student_data = cursor.fetchone()
-#     cursor.close()
-    
-#     if student_data:
-#         # Convert the user record to a dictionary
-#         student = {
-#             'StudID': student_data[0],
-#             'StudName':student_data[1]
-#             'gender': student_data[1],
-#             'Programme': student_data[2],
-#             'StudEmail': student_data[3],
-#             'PhoneNo': student_data[4],
-#             'AcademicYear': student_data[5],
-#             'CGPA': student_data[7],
-#             'CompanyName': student_data[10],
-#             'Position': student_data[11],
-#             'monthlyAllowance': student_data[12],
-#             'compSupervisorName': student_data[13],
-#             'compSupervisorEmail': student_data[14],
-#             'internStartDate': student_data[17],
-#             'internEndDate': student_data[18],
-#             # Add other fields as needed
-#         }
-        
-#         # Get the s3 bucket location
-#         s3 = boto3.resource('s3')
-#         bucket_location = boto3.client('s3').get_bucket_location(Bucket=custombucket)
-#         s3_location = (bucket_location['LocationConstraint'])
-        
-#         if s3_location is None:
-#             s3_location = 'us-east-1'
-        
-#         # Initial declaration
-#         compAcceptanceForm_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_compAcceptanceForm.pdf".format(
-#             custombucket,
-#             s3_location,
-#             student['studID'])
-        
-#         parrentAckForm_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_parrentAckForm.pdf".format(
-#             custombucket,
-#             s3_location,
-#             student['studID'])
-        
-#         letterOfIndemnity_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_letterOfIndemnity.pdf".format(
-#             custombucket,
-#             s3_location,
-#             student['studID'])
-        
-#         progressReport1_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_progressReport1.pdf".format(
-#             custombucket,
-#             s3_location,
-#             student['studID'])
-        
-#         progressReport2_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_progressReport2.pdf".format(
-#             custombucket,
-#             s3_location,
-#             student['studID'])
-        
-#         progressReport3_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_progressReport3.pdf".format(
-#             custombucket,
-#             s3_location,
-#             student['studID'])
-        
-#         finalReport_url = "https://{0}.s3.{1}.amazonaws.com/studID-{2}_finalReport.pdf".format(
-#             custombucket,
-#             s3_location,
-#             student['studID'])
-        
-#         rptStatus = 1 # means already submit
-#         # Check whether reports submitted or not, just take one report for checking, since if one exist, others exist as well
-#         response = requests.head(finalReport_url)
-#         if response.status_code != 200:
-#             rptStatus = 0  # means havent submit
-    
-#     return render_template('lecturer/studentDetail.html', 
-#                            student=student,
-#                            compAcceptanceForm_url=compAcceptanceForm_url,
-#                            parrentAckForm_url=parrentAckForm_url,
-#                            letterOfIndemnity_url=letterOfIndemnity_url,
-#                            progressReport1_url=progressReport1_url,
-#                            progressReport2_url=progressReport2_url,
-#                            progressReport3_url=progressReport3_url,
-#                            finalReport_url=finalReport_url,
-#                            rptStatus=rptStatus)

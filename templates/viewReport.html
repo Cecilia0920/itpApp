@@ -104,6 +104,7 @@
         <!--View Report  Start -->
         <div class="student-profile py-4">
             <div class="container">
+              {% for student in students %}
               <div class="row">
                 <div class="col-lg-4">
                   <div class="card shadow-sm">
@@ -112,13 +113,13 @@
                       <h3>Ishmam Ahasan Samin</h3>
                     </div>
                     <div class="card-body">
-                      <p class="mb-0"><strong class="pr-1">Student ID:</strong>22WMR04928</p>
-                      <p class="mb-0"><strong class="pr-1">Student Name:</strong> Nobita Kun</p>
-                      <p class="mb-0"><strong class="pr-1">Gender    :</strong>Female</p>
-                      <p class="mb-0"><strong class="pr-1">Programme :</strong>RDS</p>
-                      <p class="mb-0"><strong class="pr-1">Email     :</strong>nobi@gmail.com</p>
-                      <p class="mb-0"><strong class="pr-1">Phone No  :</strong>017-326 2734</p>
-                      <p class="mb-0"><strong class="pr-1">Academic Year:</strong>2023/24</p>
+                      <p class="mb-0"><strong class="pr-1">Student ID:</strong>{{ student.StudID }}</p>
+                      <p class="mb-0"><strong class="pr-1">Student Name:</strong>{{ student.StudName }}</p>
+                      <p class="mb-0"><strong class="pr-1">Gender    :</strong>{{ student.Gender }}</p>
+                      <p class="mb-0"><strong class="pr-1">Programme :</strong>{{ student.Programme }}</p>
+                      <p class="mb-0"><strong class="pr-1">Email     :</strong>{{ student.TarumtEmail }}</p>
+                      <p class="mb-0"><strong class="pr-1">Phone No  :</strong>{{ student.PhoneNum }}</p>
+                      <p class="mb-0"><strong class="pr-1">Intern Batch:</strong>{{ student.Batch }}</p>
                     </div>
                   </div>
                 </div>
@@ -132,27 +133,17 @@
                         <tr>
                           <th width="30%">Company Name</th>
                           <td width="2%">:</td>
-                          <td>Pro CS Sdn Bhd</td>
+                          <td>{{ student.CompanyName }}</td>
                         </tr>
                         <tr>
                           <th width="30%">Position</th>
                           <td width="2%">:</td>
-                          <td>Data Analyst</td>
+                          <td>{{ student.JobPosition }}</td>
                         </tr>
                         <tr>
                           <th width="30%">Allowance</th>
                           <td width="2%">:</td>
-                          <td>RM 1200.00</td>
-                        </tr>
-                        <tr>
-                          <th width="30%">Start Date</th>
-                          <td width="2%">:</td>
-                          <td>22 Feb 2024</td>
-                        </tr>
-                        <tr>
-                          <th width="30%">End Date</th>
-                          <td width="2%">:</td>
-                          <td>14 August 2024</td>
+                          <td>{{ student.JobAllowance }}</td>
                         </tr>
                       </table>
                     </div>
@@ -163,18 +154,19 @@
                       <h3 class="mb-0"><i class="fa fa-file pr-1"></i>View Report</h3>
                     </div>
                     <div class="card-body pt-0">
-                        <p>Weekly Report  : <a href="link_to_weekly_report.pdf" download><button>Download</button></a></p>
-                        <p>Monthly Report : <a href="link_to_monthly_report.pdf" download><button>Download</button></a></p>
-                        <p>Final Report   : <a href="link_to_final_report.pdf" download><button>Download</button></a></p>
-                        <form>
+                        <p>Weekly Report  : <a href="{{ weeklyReport_url }}" download><button>Download</button></a></p>
+                        <p>Monthly Report : <a href="{{ monthlyReport_url }}" download><button>Download</button></a></p>
+                        <p>Final Report   : <a href="{{ finalReport_url }}" download><button>Download</button></a></p>
+                        <form action="/updateScoreFunc">
                             <label for="mark">Score:</label>
-                            <input type="text" id="mark" name="mark" required>
+                            <input type="text" id="mark" name="ScoreInput" required>
                             <button type="submit">Submit</button>
                         </form>
                     </div>
                   </div>
                 </div>
               </div>
+              {% endfor %}
             </div>
           </div>
           <!-- partial -->

@@ -1231,8 +1231,9 @@ h2 span {
   color: #fff; /* Text color */
   border: none;
   border-radius: 50%; /* Makes the button round */
-  width: 150px;
-  height: 75px;
+  width: 30px;
+  height: 30px;
+  margin-top: 5px;
   font-size: 30px; /* Adjust the font size as needed */
   cursor: pointer;
   margin-left: 20px; /* Add left margin to separate it from the search button */
