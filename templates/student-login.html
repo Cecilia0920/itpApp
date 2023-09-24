@@ -448,6 +448,18 @@
             }
 
         </script>
+        
+        {% if error_message %}
+        <script>
+            alert('{{ error_message }}');
+        </script>
+        {% endif %}
+
+        {% if show_msg %}
+        <script>
+            alert('{{ show_msg }}');
+        </script>
+        {% endif %}
 </body>
 
 </html>

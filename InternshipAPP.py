@@ -666,7 +666,8 @@ def studentRegister():
     cursor.execute("SELECT * FROM Student WHERE TARUMTEmail = %s", (tarumt_email,))
     existing_student = cursor.fetchone()
     if existing_student:
-        return "Student with the same TARUMT Email already exists."
+        show_msg = "Student with the Same TARUMT Email Already Exists"
+        return render_template('student-login.html', show_msg=show_msg)
 
     # Insert student data into the database
     insert_sql = "INSERT INTO Student VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
@@ -681,7 +682,8 @@ def studentRegister():
     finally:
         cursor.close()
 
-    return render_template('student-login.html')
+    show_msg = "Register Successfully"
+    return render_template('student-login.html', show_msg=show_msg)
 
 @app.route("/login-student", methods=['GET', 'POST'])
 def loginStudent():
@@ -720,9 +722,9 @@ def loginStudent():
             return redirect(url_for('studentUpdate'))
 
         else:
-            flash('Invalid email or password. Please try again.', 'danger')
-
-    return render_template('student-login.html')
+            # Handle the case where the company is not found
+            error_message = "Invalid Student Email or Password"
+            return render_template('student-login.html', error_message=error_message)
 
 @app.route("/student-update", methods=['GET', 'POST'])
 def studentUpdate():
@@ -998,8 +1000,6 @@ def studentUpdate():
                 db_conn.commit()
                 cursor.close()
 
-                flash('Student details updated successfully.', 'success')
-
                 # Update the session with the new student details
                 session['StudName'] = updated_student_name
                 session['StudID'] = updated_student_id
@@ -1018,6 +1018,10 @@ def studentUpdate():
                 session['WeeklyReport'] = updated_weekly_report_url
                 session['MonthlyReport'] = updated_monthly_report_url
                 session['FinalReport'] = updated_final_report_url
+
+                show_msg = "Student Details Updated Successfully"
+                # Render the student dashboard with their updated information or original information
+                return render_template('student.html', show_msg=show_msg)
 
             except Exception as e:
                 db_conn.rollback()

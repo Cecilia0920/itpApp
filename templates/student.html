@@ -118,56 +118,69 @@
                 <div class="field-column">
                     <div class="field-row">
                         <label class="form-label" for="studentName">Student Name</label>
-                        <input type="text" id="studentName" name="studentName" class="field text-field student-name-field" autocomplete="off" required value="{{ session['StudName'] }}">
+                        <input type="text" id="studentName" name="studentName"
+                            class="field text-field student-name-field" autocomplete="off" required
+                            value="{{ session['StudName'] }}">
                         <span class="message"></span>
                     </div>
                     <div class="field-row">
                         <label class="form-label" for="studentID">Student ID</label>
-                        <input type="text" id="studentID" name="studentID" class="field text-field student-id-field" autocomplete="off" required value="{{ session['StudID'] }}">
+                        <input type="text" id="studentID" name="studentID" class="field text-field student-id-field"
+                            autocomplete="off" required value="{{ session['StudID'] }}">
                         <span class="message"></span>
                     </div>
                     <div class="field-row">
                         <label class="form-label" for="studentNRIC">NRIC Number</label>
-                        <input type="text" id="studentNRIC" name="studentNRIC" class="field text-field nric-field" autocomplete="off" required value="{{ session['NRIC'] }}">
+                        <input type="text" id="studentNRIC" name="studentNRIC" class="field text-field nric-field"
+                            autocomplete="off" required value="{{ session['NRIC'] }}">
                         <span class="message"></span>
                     </div>
                     <div class="field-row">
                         <label class="form-label" for="studentGender">Gender</label>
-                        <select id="studentGender" name="studentGender" class="field text-field gender-field" autocomplete="off" required>
-                            <option value="male" {% if session['Gender'] == 'male' %}selected{% endif %}>Male</option>
-                            <option value="female" {% if session['Gender'] == 'female' %}selected{% endif %}>Female</option>
+                        <select id="studentGender" name="studentGender" class="field text-field gender-field"
+                            autocomplete="off" required>
+                            <option value="male" {% if session['Gender']=='male' %}selected{% endif %}>Male</option>
+                            <option value="female" {% if session['Gender']=='female' %}selected{% endif %}>Female
+                            </option>
                         </select>
                         <span class="message"></span>
                     </div>
                     <div class="field-row">
                         <label class="form-label" for="progStudy">Programme of Study</label>
-                        <input type="text" id="progStudy" name="progStudy" class="field text-field prog-study-field" autocomplete="off" required value="{{ session['Programme'] }}">
+                        <input type="text" id="progStudy" name="progStudy" class="field text-field prog-study-field"
+                            autocomplete="off" required value="{{ session['Programme'] }}">
                         <span class="message"></span>
                     </div>
                     <div class="field-row">
                         <label class="form-label" for="faculty">Faculty</label>
-                        <input type="text" id="faculty" name="faculty" class="field text-field faculty-field" autocomplete="off" required value="{{ session['Faculty'] }}">
+                        <input type="text" id="faculty" name="faculty" class="field text-field faculty-field"
+                            autocomplete="off" required value="{{ session['Faculty'] }}">
                         <span class="message"></span>
                     </div>
                     <div class="field-row">
                         <label class="form-label" for="cgpa">CGPA</label>
-                        <input type="text" id="cgpa" name="cgpa" class="field text-field cgpa-field" autocomplete="off" required value="{{ session['CGPA'] }}">
+                        <input type="text" id="cgpa" name="cgpa" class="field text-field cgpa-field" autocomplete="off"
+                            required value="{{ session['CGPA'] }}">
                         <span class="message"></span>
                     </div>
                     <div class="field-row">
                         <label class="form-label" for="StudentEmail">TARUMT Email</label>
-                        <input type="email" id="StudentEmail" name="StudentEmail" class="field text-field tarumt-email-field"
-                            placeholder="xxx-wm99@student.tarc.edu.my" required autocomplete="off" value="{{ session['TarumtEmail'] }}">
-                            <span class="message"></span>
+                        <input type="email" id="StudentEmail" name="StudentEmail"
+                            class="field text-field tarumt-email-field" placeholder="xxx-wm99@student.tarc.edu.my"
+                            required autocomplete="off" value="{{ session['TarumtEmail'] }}">
+                        <span class="message"></span>
                     </div>
                     <div class="field-row">
                         <label class="form-label" for="studentMobileNum">Mobile Number</label>
-                        <input type="tel" id="studentMobileNum" name="studentMobileNum" class="field text-field mobile-num-field" autocomplete="off" required value="{{ session['PhoneNum'] }}">
+                        <input type="tel" id="studentMobileNum" name="studentMobileNum"
+                            class="field text-field mobile-num-field" autocomplete="off" required
+                            value="{{ session['PhoneNum'] }}">
                         <span class="message"></span>
                     </div>
                     <div class="field-row">
                         <label class="form-label" for="internBatch">Intern Batch</label>
-                        <input type="text" id="internBatch" name="internBatch" class="field text-field intern-batch-field" placeholder="FEB 2024" autocomplete="off"
+                        <input type="text" id="internBatch" name="internBatch"
+                            class="field text-field intern-batch-field" placeholder="FEB 2024" autocomplete="off"
                             required value="{{ session['InternBatch'] }}">
                         <span class="message"></span>
                     </div>
@@ -176,18 +189,21 @@
                 <div class="field-column">
                     <div class="field-row">
                         <label class="form-label" for="HomeAddress">Home Address</label>
-                        <textarea id="HomeAddress" name="HomeAddress" class="field text-field home-address-field" rows="6" cols="59" required>{{ session['HomeAddress'] }}</textarea>
+                        <textarea id="HomeAddress" name="HomeAddress" class="field text-field home-address-field"
+                            rows="6" cols="59" required>{{ session['HomeAddress'] }}</textarea>
                         <span class="message"></span>
                     </div>
                     <div class="field-row">
                         <label class="form-label" for="StudentPersonalEmail">Personal Email</label>
-                        <input type="email" id="StudentPersonalEmail" name="StudentPersonalEmail" class="field text-field personal-email-field"
-                            placeholder="xxx@gmail.com" required autocomplete="off" value="{{ session['PersonalEmail'] }}">
+                        <input type="email" id="StudentPersonalEmail" name="StudentPersonalEmail"
+                            class="field text-field personal-email-field" placeholder="xxx@gmail.com" required
+                            autocomplete="off" value="{{ session['PersonalEmail'] }}">
                         <span class="message"></span>
                     </div>
                     <div class="field-row">
                         <label class="form-label" for="profilePhoto">Profile Photo</label>
-                        <input type="file" id="profilePhoto" name="profilePhoto" class="field text-field profile-pic-field" accept="image/*">
+                        <input type="file" id="profilePhoto" name="profilePhoto"
+                            class="field text-field profile-pic-field" accept="image/*">
                         {% if session['ProfilePhoto'] %}
                         <a href="{{ session['ProfilePhoto'] }}" target="_blank" class="btn btn-primary">View</a>
                         {% endif %}
@@ -195,12 +211,15 @@
                     </div>
                     <div class="field-row">
                         <label class="form-label" for="studPassword">Password</label>
-                        <input type="password" id="studPassword" name="studPassword" class="field text-field password-field" required autocomplete="off" value="{{ session['Password'] }}">
+                        <input type="password" id="studPassword" name="studPassword"
+                            class="field text-field password-field" required autocomplete="off"
+                            value="{{ session['Password'] }}">
                         <span class="message"></span>
                     </div>
                     <div class="field-row">
                         <label class="form-label" for="resume">Resume</label>
-                        <input type="file" id="resume" name="resume" class="field file-field" accept=".pdf, .doc, .docx">
+                        <input type="file" id="resume" name="resume" class="field file-field"
+                            accept=".pdf, .doc, .docx">
                         {% if session['Resume'] %}
                         <a href="{{ session['Resume'] }}" target="_blank" class="btn btn-primary">View</a>
                         {% endif %}
@@ -208,7 +227,8 @@
                     </div>
                     <div class="field-row">
                         <label class="form-label" for="weeklyReport">Weekly Report</label>
-                        <input type="file" id="weeklyReport" name="weeklyReport" class="field file-field" accept=".pdf, .doc, .docx">
+                        <input type="file" id="weeklyReport" name="weeklyReport" class="field file-field"
+                            accept=".pdf, .doc, .docx">
                         {% if session['WeeklyReport'] %}
                         <a href="{{ session['WeeklyReport'] }}" target="_blank" class="btn btn-primary">View</a>
                         {% endif %}
@@ -216,7 +236,8 @@
                     </div>
                     <div class="field-row">
                         <label class="form-label" for="monthlyReport">Monthly Report</label>
-                        <input type="file" id="monthlyReport" name="monthlyReport" class="field file-field" accept=".pdf, .doc, .docx">
+                        <input type="file" id="monthlyReport" name="monthlyReport" class="field file-field"
+                            accept=".pdf, .doc, .docx">
                         {% if session['MonthlyReport'] %}
                         <a href="{{ session['MonthlyReport'] }}" target="_blank" class="btn btn-primary">View</a>
                         {% endif %}
@@ -224,7 +245,8 @@
                     </div>
                     <div class="field-row">
                         <label class="form-label" for="finalReport">Final Report</label>
-                        <input type="file" id="finalReport" name="finalReport" class="field file-field" accept=".pdf, .doc, .docx">
+                        <input type="file" id="finalReport" name="finalReport" class="field file-field"
+                            accept=".pdf, .doc, .docx">
                         {% if session['FinalReport'] %}
                         <a href="{{ session['FinalReport'] }}" target="_blank" class="btn btn-primary">View</a>
                         {% endif %}
@@ -322,6 +344,12 @@
 
     <!-- Template Javascript -->
     <script src="/assets/js/main.js"></script>
+
+    {% if show_msg %}
+    <script>
+        alert('{{ show_msg }}');
+    </script>
+    {% endif %}
 </body>
 
 </html>
