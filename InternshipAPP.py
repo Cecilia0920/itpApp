@@ -252,8 +252,8 @@ def studentDashboard():
                 'StudProfile': row[12],
                 'TarumtEmail': row[7],
                 'Programme': row[4],
-                'CompanyName': row[21],
-                'JobAllowance': row[19],
+                'CompanyName': row[19],
+                'JobAllowance': row[21],
             }
             students.append(app_dict)
         return render_template('studentList.html', students=students)
@@ -287,8 +287,8 @@ def searchStudent():
                 'StudProfile': row[12],
                 'TarumtEmail': row[7],
                 'Programme': row[4],
-                'CompanyName': row[21],
-                'JobAllowance': row[19],
+                'CompanyName': row[19],
+                'JobAllowance': row[21],
             }
             students.append(app_dict)
         # Construct profile image URLs for all students
@@ -337,8 +337,8 @@ def assignSupervisor():
                 'StudProfile': row[12],
                 'TarumtEmail': row[7],
                 'Programme': row[4],
-                'CompanyName': row[21],
-                'JobAllowance': row[19],
+                'CompanyName': row[19],
+                'JobAllowance': row[21],
             }
             students.append(app_dict)
         return render_template('studentList.html', students=students)
