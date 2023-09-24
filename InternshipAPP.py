@@ -410,6 +410,7 @@ def showStudReport():
             'StudName':student_data[0],
             'Gender': student_data[3],
             'Programme': student_data[4],
+            'PhoneNum': student_data[8],
             'TarumtEmail': student_data[7],
             'student_profile':student_data[12],
             'weeklyReport_url':student_data[15],
